@@ -208,18 +208,14 @@ public class InstallSplitPane extends SPMSplitPane
      */
     private void getFiles( TreePath addTo, List<SPMObjectInfo> infos, List<SPMObjectInfo> managerInfoList )
     {
-	DefaultMutableTreeNode tn;
-	SPMObjectInfo info;
+
 	SPMObjectInfo managerInfo;
 	boolean eligible;
-	TreeMap map = new TreeMap();
+	TreeMap<String, SPMObjectInfo> map = new TreeMap<>();
 
-	for ( int i = 0; i < infos.size(); i++ )
+	for (SPMObjectInfo info: infos)
 	{
-	    info = (SPMObjectInfo) infos.get( i );
-
 	    if (info.restriction >= SPMParameters.HIDE) continue;
-
 	    {
 		//check if file candidate for update or install
 		eligible = ( workMode == INSTALL );
@@ -253,8 +249,7 @@ public class InstallSplitPane extends SPMSplitPane
 				else if ( info.getMinor() == managerInfo.getMinor() )
 				{
 				    if (managerInfo.isBeta()) {
-					if (info.isBeta() && info.getBeta()
-						<= managerInfo.getBeta())
+					if (info.isBeta() && info.getBeta() <= managerInfo.getBeta())
 					{
 					    eligible = false;
 					}
@@ -273,18 +268,11 @@ public class InstallSplitPane extends SPMSplitPane
 		}
 	    }
 	}
-	Collection col = map.values();
-	if ( ! col.isEmpty() )
-	{
-	    for( Iterator iter = col.iterator(); iter.hasNext(); )
-	    {
-		info = (SPMObjectInfo) iter.next();
-		tn = new DefaultMutableTreeNode( info.getName() );
-		tn.setAllowsChildren( false );
-		tn.setUserObject( info );
-		tree.addNode( addTo, tn );
-	    }
-	}
+
+        for (Map.Entry<String, SPMObjectInfo> entry: map.entrySet())
+        {
+            tree.addNode(addTo, new DefaultMutableTreeNode(entry, false));
+        }
     }
 
 
