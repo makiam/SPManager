@@ -115,7 +115,7 @@ public class SPManagerPlugin implements Plugin
 
 	    File files[], urlfile;
 	    URL url;
-	    Map.Entry entry;
+	    
 	    String key[], value;
 	    File plugdir = new File(PLUGIN_DIRECTORY);
 	    if (plugdir.exists()) {
@@ -170,14 +170,10 @@ public class SPManagerPlugin implements Plugin
 			}
 
 			// ok, now perform the actions
-			for (Iterator iter = info.actions.entrySet().iterator();
-			iter.hasNext(); ) {
 
-			    entry = (Map.Entry) iter.next();
-			    key = entry.getKey().toString().split(":");
-
-			    //System.out.println("SPM: action=" +
-			    //	       entry.getValue().toString());
+			for (Map.Entry<String, String> entry: info.actions.entrySet())
+                        {
+			    key = entry.getKey().split(":");
 
 			    try {
 				if (key[0].startsWith("/"))
@@ -193,25 +189,8 @@ public class SPManagerPlugin implements Plugin
 
 			    System.out.println("SPM: adding path: " + url);
 
-			    value = entry.getValue().toString();
+			    value = entry.getValue();
 
-			    /*
-			    if ("merge".equalsIgnoreCase(value)) {
-				if (searchldr != null)
-				    searchldr.merge(url);
-				else if (addUrl != null) {
-				    try {
-					urlarg[0] = url;
-					addUrl.invoke(urlldr, urlarg);
-				    } catch (Exception e) {
-					System.out.println("Error invoking: "
-							   + e);
-				    }
-				}
-				else System.out.println("Could not merge path"
-							+ url);				    
-			    }
-			     */
 			    if ("classpath".equalsIgnoreCase(value)) {
 				if (searchldr != null)
 				    searchldr.add(url);
@@ -221,20 +200,17 @@ public class SPManagerPlugin implements Plugin
 					//addUrl.invoke(urlldr, urlarg);        // non-varargs call (1.4)
 					addUrl.invoke(urlldr, url);		// varargs call (1.5)
 				    } catch (Exception e) {
-					System.out.println("Error invoking: "
-						+ e);
+					System.out.println("Error invoking: " + e);
 				    }
 				}
-				else System.out.println("Could not add path" +
-					url);				    
+				else System.out.println("Could not add path" + url);
 			    }
 			    else if ("import".equalsIgnoreCase(value)) {
 				ldr = (ClassLoader) loaders.get(url);
 				
 				if (key.length == 1) {
 				    if (obj != null) searchldr.add(ldr);
-				    else System.out.println("SPM: could not find"
-					    + " loader for: " + url);
+				    else System.out.println("SPM: could not find loader for: " + url);
 				}
 				/*
 				 * NTJ - disabled. No longer needed, and requires a new method in SearchlistClassLoader

@@ -65,12 +65,12 @@ public class SPMObjectInfo
 	private String description = null;
 	private String comments = null;
 
-	private HashMap externals;
+	private Map<String, String> externals;
 	private List<String> changeLog;
 	private List<String> details;
 
-	protected HashMap exports;
-	public HashMap actions;
+	protected Map<String, String> exports;
+	public Map<String, String> actions;
 
 	/**
 	 *  Script file name
@@ -745,15 +745,16 @@ public class SPMObjectInfo
 	{
 		int i, j, filtType;
 		String val, filtName, filtVal;
-		Iterator iter;
+		
 		SPMParameters params = SPManagerFrame.getParameters();
 
-		if (changeLog == null) {
+		if (changeLog == null)
+                {
                     changeLog = new ArrayList<>(16);
                     details = new ArrayList<>(16);
-                    externals = new HashMap(16);
+                    externals = new HashMap<>(16);
                     destination = new ArrayList(16);
-                    actions = new HashMap(16);
+                    actions = new HashMap<>(16);
                     exports = new HashMap(32);
 		}
 		else {
@@ -812,9 +813,8 @@ public class SPMObjectInfo
 		String extName, extType, extAssoc, extAction;
 
 		// NTJ: infer depedencies from other tags
-		for (i = 0;
-		(node = SPManagerUtils.getNodeFromNodeList(nl, "import", i)) != null;
-		i++) {
+		for (i = 0; (node = SPManagerUtils.getNodeFromNodeList(nl, "import", i)) != null; i++)
+                {
 
 			extName = SPManagerUtils.getAttribute(node, "name");
 
@@ -824,10 +824,8 @@ public class SPMObjectInfo
 		}
 
 		// NTJ: get explicit dependencies
-		for (i = 0;
-		(node = SPManagerUtils.getNodeFromNodeList(nl, "external", i))
-		!= null;
-		i++) {
+		for (i = 0; (node = SPManagerUtils.getNodeFromNodeList(nl, "external", i)) != null; i++)
+                {
 
 			extName = SPManagerUtils.getAttribute(node, "name");
 
@@ -851,10 +849,8 @@ public class SPMObjectInfo
 		String plugClass, methName, methId, methHelp, exportList="";
 
 		// get details of plugin classes
-		for (i = 0;
-		(node = SPManagerUtils.getNodeFromNodeList(nl, "plugin", i))
-		!= null;
-		i++) {
+		for (i = 0; (node = SPManagerUtils.getNodeFromNodeList(nl, "plugin", i)) != null; i++)
+                {
 
 			plugClass = SPManagerUtils.getAttribute(node, "class");
 
@@ -893,11 +889,10 @@ public class SPMObjectInfo
 
 		// create the display lists
 		String extList = "";
-		iter = externals.entrySet().iterator();
-		while (iter.hasNext()) {
-			extList += (extList.length() > 0 ? "\n" : "") +
-			((Map.Entry) iter.next()).getValue().toString();
-		}
+                for(String ext: externals.values())
+                {
+                    extList += (extList.length() > 0 ? "\n" : "") + ext;
+                }
 
 		setLog(SPMTranslate.text("flags"), flags, 1);
 		setLog(SPMTranslate.text("otherFiles"), extList, 2);
