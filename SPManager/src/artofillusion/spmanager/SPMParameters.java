@@ -100,13 +100,12 @@ public class SPMParameters
 	    savePropertiesFile();
             return;
         }
-        try
+        try(InputStream in = new BufferedInputStream( new FileInputStream( f ) ))
         {
-            InputStream in = new BufferedInputStream( new FileInputStream( f ) );
+
             Properties props = new Properties();
             props.load( in );
             parseProperties( props );
-            in.close();
         }
         catch ( IOException ex )
         {
@@ -333,12 +332,12 @@ public class SPMParameters
     {
 
         File f = new File( System.getProperty( "user.home" ), ".spmanagerprefs" );
-        try
+       
+        try(OutputStream out = new BufferedOutputStream( new FileOutputStream( f ) ))
         {
-            OutputStream out = new BufferedOutputStream( new FileOutputStream( f ) );
             Properties props = newProperties();
             props.store( out, "Scripts & Plugins Manager Preferences File" );
-            out.close();
+
         }
         catch ( IOException ex )
         {
