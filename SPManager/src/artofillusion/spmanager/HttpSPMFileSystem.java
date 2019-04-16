@@ -150,16 +150,14 @@ public class HttpSPMFileSystem extends SPMFileSystem
      */
     private void scanPlugins()
     {
-        if (! SPManagerFrame.getParameters().getUseCache() )
-            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningPluginsFrom", new String[]{repository.toString()} ), 5000 );
-        else
-        {
-            //String s = repository.toString().replaceAll("/AoIRepository/", "");
+        if (SPManagerFrame.getParameters().getUseCache() ) {
             String s = repository.toString();
-	    s = s.substring(0, s.lastIndexOf('/'));
+            s = s.substring(0, s.lastIndexOf('/'));
             s = s + "/cgi-bin/scripts.cgi?Plugins%20" + SPManagerPlugin.AOI_VERSION;
-            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningPluginsFrom", new String[]{s} ), 5000 );
-        }
+            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningPluginsFrom", s ), 5000 );
+        } else
+            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningPluginsFrom", repository.toString()), 5000 );
+
         if ( statusDialog != null )
             statusDialog.setText( SPMTranslate.text( "scanningPlugins" ) );
         pluginsInfo = new ArrayList<>();
@@ -188,16 +186,15 @@ public class HttpSPMFileSystem extends SPMFileSystem
      */
     private void scanToolScripts()
     {
-        if ( ! SPManagerFrame.getParameters().getUseCache() )
-            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningToolScriptsFrom", new String[]{repository.toString()} ), 5000 );
-        else
-        {
-            //String s = repository.toString().replaceAll("/AoIRepository/", "");
+        if ( SPManagerFrame.getParameters().getUseCache() ) {
+
             String s = repository.toString();
-	    s = s.substring(0, s.lastIndexOf('/'));
+            s = s.substring(0, s.lastIndexOf('/'));
             s = s + "/cgi-bin/scripts.cgi?Scripts/Tools%20" + SPManagerPlugin.AOI_VERSION;
-            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningToolScriptsFrom", new String[]{s} ), 5000 );
-        }
+            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningToolScriptsFrom", s ), 5000 );
+        } else
+            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningToolScriptsFrom", repository.toString() ), 5000 );
+
         if ( statusDialog != null )
             statusDialog.setText( SPMTranslate.text( "scanningToolScripts" ) );
         toolInfo = new ArrayList<>();
@@ -226,16 +223,15 @@ public class HttpSPMFileSystem extends SPMFileSystem
      */
     private void scanObjectScripts()
     {
-        if ( ! SPManagerFrame.getParameters().getUseCache() )
-                    SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningObjectScriptsFrom", new String[]{repository.toString()} ), 5000 );
-        else
-        {
-            //String s = repository.toString().replaceAll("/AoIRepository/", "");
+        if ( SPManagerFrame.getParameters().getUseCache() ) {
+
             String s = repository.toString();
-	    s = s.substring(0, s.lastIndexOf('/'));
+            s = s.substring(0, s.lastIndexOf('/'));
             s = s + "/cgi-bin/scripts.cgi?Scripts/Objects%20" + SPManagerPlugin.AOI_VERSION;
-            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningObjectScriptsFrom", new String[]{s} ), 5000 );
-        }
+            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningObjectScriptsFrom", s), 5000 );
+        } else
+            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningObjectScriptsFrom", repository.toString()), 5000 );
+        
         if ( statusDialog != null )
             statusDialog.setText( SPMTranslate.text( "scanningObjectScripts" ) );
         objectInfo = new ArrayList<>();
@@ -264,16 +260,15 @@ public class HttpSPMFileSystem extends SPMFileSystem
      */
     private void scanStartupScripts()
     {
-        if ( ! SPManagerFrame.getParameters().getUseCache() )
-                    SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningStartupScriptsFrom", new String[]{repository.toString()} ), 5000 );
-        else
-        {
-            //String s = repository.toString().replaceAll("/AoIRepository/", "");
+        if ( SPManagerFrame.getParameters().getUseCache() ) {
+            
             String s = repository.toString();
-	    s = s.substring(0, s.lastIndexOf('/'));
+            s = s.substring(0, s.lastIndexOf('/'));
             s = s + "/cgi-bin/scripts.cgi?Scripts/Startup%20" + SPManagerPlugin.AOI_VERSION;
-            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningStartupScriptsFrom", new String[]{s} ), 5000 );
-        }
+            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningStartupScriptsFrom", s), 5000 );
+        } else
+            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningStartupScriptsFrom", repository.toString()), 5000 );
+
         if ( statusDialog != null )
             statusDialog.setText( SPMTranslate.text( "scanningStartupScripts" ) );
         startupInfo = new ArrayList<>();

@@ -272,8 +272,8 @@ public class SPMParameters
             if ( modified )
             {
                 SwingUtilities.invokeLater(
-					   //new Thread()
-					   new Runnable()
+                    //new Thread()
+                    new Runnable()
                     {
                         @Override
                         public void run()
@@ -288,7 +288,7 @@ public class SPMParameters
         {
             if ( !( ( e instanceof UnknownHostException ) || ( e instanceof SocketException ) ) )
                 e.printStackTrace();
-            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "unknownRepositoriesHost", new String[]{repListURL.toString()} ), -1 );
+            SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "unknownRepositoriesHost", repListURL.toString() ), -1 );
             //live on saved repositories.
             //System.out.println( "Remote repository list : Not connected. Try later" );
         }

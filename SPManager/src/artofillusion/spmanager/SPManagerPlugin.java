@@ -126,8 +126,7 @@ public class SPManagerPlugin implements Plugin
 		    if (info.invalid) {
 			if (errs == null) errs = new StringBuffer(1024);
 			if (errs.length() > 0) errs.append('\n');
-			errs.append(SPMTranslate.text("pluginFailure",
-				info.getName()));
+			errs.append(SPMTranslate.text("pluginFailure", info.getName()));
 		    }
 
 		    if (info.actions != null && info.actions.size() > 0) {
