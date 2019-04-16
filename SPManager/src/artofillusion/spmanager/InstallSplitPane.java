@@ -11,22 +11,15 @@
  */
 package artofillusion.spmanager;
 
-import artofillusion.*;
-import artofillusion.ui.Translate;
 import artofillusion.ui.UIUtilities;
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.tree.*;
 import buoy.widget.*;
 import buoy.event.*;
-//import artofillusion.ModellingApp;
 import java.io.*;
 import java.util.*;
-import java.util.zip.*;
 import java.net.*;
-import java.text.*;
 
 
 /**

@@ -11,12 +11,9 @@
  */
 package artofillusion.spmanager;
 
-import artofillusion.*;
 import artofillusion.ui.*;
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.tree.*;
 import buoy.widget.*;
 import buoy.event.*;
 import java.io.*;
@@ -26,12 +23,6 @@ import java.net.*;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
 import javax.swing.text.html.parser.*;
-import java.util.regex.*;
-import javax.xml.parsers.*;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.xml.sax.*;
 import org.w3c.dom.*;

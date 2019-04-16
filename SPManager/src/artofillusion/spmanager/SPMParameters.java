@@ -15,11 +15,8 @@ package artofillusion.spmanager;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import java.util.regex.*;
-import java.awt.*;
 import javax.swing.*;
 import buoy.widget.*;
-import buoy.event.*;
 
 import artofillusion.ui.*;
 

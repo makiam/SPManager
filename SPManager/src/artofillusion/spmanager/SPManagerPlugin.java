@@ -17,7 +17,6 @@ import artofillusion.util.SearchlistClassLoader;
 import artofillusion.ui.*;
 
 import java.awt.*;
-import java.awt.event.*;
 import buoy.event.*;
 import buoy.widget.*;
 

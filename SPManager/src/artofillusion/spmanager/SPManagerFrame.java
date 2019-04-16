@@ -17,10 +17,8 @@ import artofillusion.ui.UIUtilities;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.Timer.*;
 import javax.swing.border.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.util.Vector;
 
 import buoy.widget.*;
