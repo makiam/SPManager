@@ -77,9 +77,9 @@ public class SPManagerPlugin implements Plugin
 	    System.out.println("SPManager starting...");
 
 	    // get details of plugin classloaders
-	    int i, j, idx;
+	    int i, j;
 	    URL urlList[];
-	    ArrayList aoiloaders;
+
 	    ClassLoader ldr = null;
 	    URLClassLoader urlldr = null;
 	    SearchlistClassLoader searchldr = null;
@@ -98,29 +98,12 @@ public class SPManagerPlugin implements Plugin
 		    loaders.put(urlList[0], obj);
 	    }
 
-	    /*
-	    try {
-		Field ldrfield =
-		    PluginRegistry.class.getDeclaredField("pluginLoaders");
 
-		ldrfield.setAccessible(true);
-
-		aoiloaders = (ArrayList) ldrfield.get(null);
-
-	    } catch (Exception e) {
-		System.out.println("SPManager: cannot get pluginsLoaders: " +
-				   e);
-		aoiloaders = new ArrayList();
-	    }
-	     */
-
-	    URL[] urlarg = new URL[1];
 	    Class[] sig = new Class[] { URL.class };
 	    Method addUrl = null;
 
 	    try {
-		addUrl =
-		    URLClassLoader.class.getDeclaredMethod("addURL", sig);
+		addUrl = URLClassLoader.class.getDeclaredMethod("addURL", sig);
 		addUrl.setAccessible(true);
 	    } catch (Exception e) {
 		System.out.println("Error getting addURL method: " + e);
@@ -129,7 +112,7 @@ public class SPManagerPlugin implements Plugin
 	    // get details of all local plugins
 	    SPMObjectInfo info;
 	    StringBuffer errs = null;
-	    Class plugType;
+
 	    File files[], urlfile;
 	    URL url;
 	    Map.Entry entry;
