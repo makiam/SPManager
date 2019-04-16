@@ -46,7 +46,7 @@ public class InstallSplitPane extends SPMSplitPane
     private boolean isDownloading;
     private SPMObjectInfo installNodeInfo;
 
-    protected ArrayList errors=null;
+    protected ArrayList<String> errors = null;
 
     /**
      *  Constructor for the InstallSplitPane object
@@ -642,8 +642,7 @@ public class InstallSplitPane extends SPMSplitPane
 
 		update = new File(folder, file.getName() + ".upd");
 
-		System.out.println("downloading to " +
-			update.getAbsolutePath());
+		System.out.println("downloading to " + update.getAbsolutePath());
 
 		if ( status != null )
 		{
@@ -673,9 +672,7 @@ public class InstallSplitPane extends SPMSplitPane
 		if (errors.size() > errCount) {
 
 		    if (!update.delete()) {
-			System.out.println("SPManager: tx abort: " +
-				" update file not deleted: " +
-				update.getAbsolutePath());
+			System.out.println("SPManager: tx abort: update file not deleted: " + update.getAbsolutePath());
 
 			// NTJ Happens normally on some Wincrap boxes, so don't
 			// display an error
@@ -683,8 +680,7 @@ public class InstallSplitPane extends SPMSplitPane
 			//   update.getAbsolutePath());
 
 			// make file zero-length
-			RandomAccessFile raf =
-			    new RandomAccessFile(update, "rw");
+			RandomAccessFile raf = new RandomAccessFile(update, "rw");
 			raf.setLength(0);
 			raf.close();
 		    }
@@ -721,8 +717,7 @@ public class InstallSplitPane extends SPMSplitPane
 			    //   update.getAbsolutePath());
 
 			    // make file zero-length
-			    RandomAccessFile raf =
-				new RandomAccessFile(update, "rw");
+			    RandomAccessFile raf = new RandomAccessFile(update, "rw");
 			    raf.setLength(0);
 			    raf.close();
 			}
@@ -923,19 +918,21 @@ public class InstallSplitPane extends SPMSplitPane
     }
 
     public void showErrors()
-    { if (errors != null && errors.size() > 0) showErrors(errors); }
+    { 
+        if (errors != null && errors.size() > 0) showErrors(errors);
+    }
     
     /**
      *  show errors in a panel
      */
-    public static void showErrors(ArrayList errs)
+    public static void showErrors(List<String> errs)
     {
 	BTextArea txt = new BTextArea(5, 45);
 	txt.setEditable(false);
 	txt.setWrapStyle(BTextArea.WRAP_WORD);
 
-	for (int i = 0; i < errs.size(); i++)
-	    txt.append(errs.get(i) + "\n");
+	for (String err: errs)
+	    txt.append(err + "\n");
 
 	BScrollPane detail =
 	    new BScrollPane(txt, BScrollPane.SCROLLBAR_NEVER,
