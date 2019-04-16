@@ -398,16 +398,12 @@ public class SPMParameters
         //current = 0;
         //repositories.add( "http://localhost/AoIRepository/" );
 
-	Iterator iter = p.entrySet().iterator();
-	Map.Entry entry;
-	while (iter.hasNext()) {
-	    entry = (Map.Entry) iter.next();
-	    s = (String) entry.getKey();
-	    if (s.startsWith("FILTER_")) {
-		filters.put(s.substring("FILTER_".length()),
-			   (String) entry.getValue());
-	    }
-	}
+        for (Map.Entry entry: p.entrySet())
+        {
+            s = (String) entry.getKey();
+            if (s.startsWith("FILTER_"))
+                filters.put(s.substring("FILTER_".length()), (String) entry.getValue());
+        }
 
 	// initialise an empty filter set
 	if (filters.isEmpty()) {
