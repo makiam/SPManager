@@ -56,10 +56,6 @@ public class HttpSPMFileSystem extends SPMFileSystem
         super();
         unknownHost = false;
         repository = rep;
-        pluginsDoc = null;
-        objectsDoc = null;
-        startupDoc = null;
-        toolsDoc = null;
     }
 
 
@@ -77,11 +73,6 @@ public class HttpSPMFileSystem extends SPMFileSystem
         initialized = false;
         unknownHost = false;
         repository = rep;
-        pluginsDoc = null;
-        objectsDoc = null;
-        startupDoc = null;
-        toolsDoc = null;
-        //SPManagerPlugin.getFrame().getParameters().initHttp();
     }
 
 
