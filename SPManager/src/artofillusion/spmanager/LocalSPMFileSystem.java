@@ -14,6 +14,8 @@ package artofillusion.spmanager;
 
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class LocalSPMFileSystem extends SPMFileSystem
@@ -57,19 +59,17 @@ public class LocalSPMFileSystem extends SPMFileSystem
     
     private void scanFiles(String directory, List<SPMObjectInfo> infoList, String suffix)
     {
-        SPMObjectInfo info;
-        
-        File dir = new File(directory);
-        if (dir.exists())
-        {
-            String[] files = dir.list();
-            if (files.length > 0) Arrays.sort(files);
-            for (int i = 0; i < files.length; i++)
-                if (files[i].endsWith(suffix))
-                {   info = new SPMObjectInfo(directory+File.separatorChar+files[i]);
-                    infoList.add(info);
-                }
-        }
+        if (Files.notExists(Paths.get(directory))) return;
+
+        String[] files = Paths.get(directory).toFile().list();
+        if (files.length > 0) Arrays.sort(files);
+
+        for (String file: files)
+            if (file.endsWith(suffix))
+            {   
+                SPMObjectInfo info = new SPMObjectInfo(directory + File.separatorChar + file);
+                infoList.add(info);
+            }
     }
 
 }

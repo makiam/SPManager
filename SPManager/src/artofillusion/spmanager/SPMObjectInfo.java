@@ -1173,7 +1173,7 @@ public class SPMObjectInfo
 	 */
 	public String getDescription()
 	{
-		return description;
+            return description;
 	}
 
 
@@ -1191,7 +1191,9 @@ public class SPMObjectInfo
 	 *  get the list of external dependencies.
 	 */
 	public Collection getExternals()
-	{ return (externals != null ? externals.values() : null); }
+	{
+            return externals == null ? null : externals.values();
+        }
 
 	/**
 	 *  get the change log

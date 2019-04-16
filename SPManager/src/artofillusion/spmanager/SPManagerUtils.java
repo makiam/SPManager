@@ -49,11 +49,13 @@ public class SPManagerUtils
      */
     public static void updateAllAoIWindows()
     {
-	try {
-	    EditingWindow allWindows[] = ArtOfIllusion.getWindows();
-	    for ( int i = 0; i < allWindows.length; i++ )
-		if ( allWindows[i] instanceof LayoutWindow )
-		    ( (LayoutWindow) allWindows[i] ).rebuildScriptsMenu();
+	try
+        {
+            for (EditingWindow window : ArtOfIllusion.getWindows()) {
+                if (window instanceof LayoutWindow) {
+                    ((LayoutWindow) window).rebuildScriptsMenu();
+                }
+            }
 	} catch (Throwable t) {}
     }
 

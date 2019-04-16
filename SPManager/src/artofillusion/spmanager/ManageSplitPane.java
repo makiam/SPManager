@@ -29,8 +29,7 @@ import java.util.List;
  */
 public class ManageSplitPane extends SPMSplitPane
 {
-    private BButton deleteButton;
-    private BButton deleteAllButton;
+    private final BButton deleteButton;
 
 
     /**
@@ -120,44 +119,28 @@ public class ManageSplitPane extends SPMSplitPane
      */
     private void getFiles( TreePath addTo, List<SPMObjectInfo> infos )
     {
-        DefaultMutableTreeNode tn;
-        SPMObjectInfo info;
+        for(SPMObjectInfo info: infos)
+            tree.addNode(addTo, new DefaultMutableTreeNode(info, false));
 
-        for ( int i = 0; i < infos.size(); i++ )
-        {
-            info = infos.get( i );
-            tn = new DefaultMutableTreeNode( info.getName() );
-            tn.setAllowsChildren( false );
-            tn.setUserObject( info );
-            tree.addNode( addTo, tn );
-            //System.out.println( "added " + info.getName() + " to " + addTo );
-        }
 
 	// NTJ: set reference counts
-	for (int i = 0; i < infos.size(); i++) {
-            info = (SPMObjectInfo) infos.get( i );
-	    //System.out.println("SPManager: file=" + info.getName());
-
+	for (SPMObjectInfo info: infos) {
 	    Collection externals = info.getExternals();
+
+            if (null == externals) continue;
 	    String extName, extType;
 	    SPMObjectInfo ext;
-	    if (externals != null) {
-		//for (int j = 0; j < externals.size(); j++) {
-		for (Iterator iter = externals.iterator(); iter.hasNext(); ) {
-		    //extName = (String) externals.get(j);
-		    extName = (String) iter.next();
 
-		    if (extName.endsWith("= required")) {
-			extType = extName.substring(extName.indexOf(':')+1,
-						    extName.indexOf('=')).trim();
-			extName = extName.substring(0, extName.indexOf(':'));
+            for( Object exxt: externals)
+            {
+                extName = (String) exxt;
+                extType = extName.substring(extName.indexOf(':')+1, extName.indexOf('=')).trim();
+                extName = extName.substring(0, extName.indexOf(':'));
 
-			//System.out.println("getFiles: extName=" + extName + "<<");
-			ext = getInfo(extName, (TreePath)pathMap.get(extType));
-			if (ext != null) ext.refcount++;
-		    }
-		}
-	    }
+                //System.out.println("getFiles: extName=" + extName + "<<");
+                ext = getInfo(extName, (TreePath)pathMap.get(extType));
+                if (ext != null) ext.refcount++;
+            }
 	}
     }
 
@@ -252,12 +235,10 @@ public class ManageSplitPane extends SPMSplitPane
             voidSelection();
 
         }
-        for ( int i = 0; i < splitPaneList.size(); ++i )
+        for (SPMSplitPane pane: splitPaneList)
         {
-            if ( splitPaneList.get( i ) != this )
-            {
-                ( splitPaneList.get( i ) ).doUpdate();
-            }
+            if (pane == this) continue;
+            pane.doUpdate();
         }
 
     }

@@ -509,9 +509,9 @@ public class SPMSplitPane extends BSplitPane
 	public SPMObjectInfo getInfo(String name, TreePath path)
 	{
 		if (path == null) {
-			System.out.println("SPManager: poor XML content: " +
+                    System.out.println("SPManager: poor XML content: " +
 					"invalid external type (" + name + ")");
-			return null;
+                    return null;
 		}
 
 		Object info;
@@ -587,12 +587,9 @@ public class SPMSplitPane extends BSplitPane
 	 */
 	public SPMSplitPane getManager()
 	{
-            for ( int i = 0; i < splitPaneList.size(); ++i )
+            for (SPMSplitPane pane: splitPaneList)
             {
-                if ( ( splitPaneList.get( i ) ).workMode == BROWSE )
-                {
-                    return splitPaneList.get( i );
-                }
+                if (pane.workMode == BROWSE) return pane;
             }
             return null;
 	}
@@ -614,10 +611,10 @@ public class SPMSplitPane extends BSplitPane
 	 */
 	protected void clearTree()
 	{
-		clearPath( pluginsPath );
-		clearPath( toolScriptsPath );
-		clearPath( objectScriptsPath );
-		clearPath( startupScriptsPath );
+            clearPath( pluginsPath );
+            clearPath( toolScriptsPath );
+            clearPath( objectScriptsPath );
+            clearPath( startupScriptsPath );
 	}
 
 
@@ -649,7 +646,7 @@ public class SPMSplitPane extends BSplitPane
 	 */
 	public boolean isModified()
 	{
-		return modified;
+            return modified;
 	}
 
 
@@ -666,8 +663,8 @@ public class SPMSplitPane extends BSplitPane
 		SPMObjectInfo nodeInfo = getSelectedNodeInfo();
 		if ( nodeInfo != null )
 		{
-			nodeInfo.setSelected( !nodeInfo.isSelected() );
-			notifyObjectInfoSelection( nodeInfo );
+                    nodeInfo.setSelected( !nodeInfo.isSelected() );
+                    notifyObjectInfoSelection( nodeInfo );
 		}
 		repaint();
 	}
@@ -692,15 +689,15 @@ public class SPMSplitPane extends BSplitPane
 		if (extMap == null) extMap = new Hashtable(32);
 
 		if (extMap.containsKey(info)) {
-			System.out.println("SPMSplitPane: dependency loop detected: " +
+                    System.out.println("SPMSplitPane: dependency loop detected: " +
 					info.getName());
-			return;
+                    return;
 		}
 
 		extMap.put(info, info);
 
 		Collection externals = info.getExternals();
-		if (externals == null || externals.size() == 0) return;
+		if (externals == null || externals.isEmpty()) return;
 
 		String extName, extType;
 		SPMObjectInfo ext;
