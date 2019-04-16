@@ -41,8 +41,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
     private HttpStatusDialog statusDialog;
     private boolean isDownloading;
     private Vector callbacks;
-    private Document pluginsDoc, objectsDoc, startupDoc, toolsDoc;
-    private File file;
+
     
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
     
@@ -879,34 +878,6 @@ public class HttpSPMFileSystem extends SPMFileSystem
         }
         return downloadedLength - initialValue;
     }
-
-    /**
-     *  Description of the Method
-     *
-     *@param  is  Description of the Parameter
-     *@return     Description of the Return Value
-     */
-    private Vector htmlFindFiles( InputStream is )
-    {
-        Vector v = new Vector();
-
-        HtmlParserCallback callback = new HtmlParserCallback( v );
-//        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader( is ) );
-		BufferedReader bufferedReader = null;
-        try {bufferedReader = new BufferedReader( new InputStreamReader( is, "UTF-8" ) ); }
-        catch (Exception e) { e.printStackTrace(); return v; }
-        try
-        {
-            new ParserDelegator().parse( bufferedReader, callback, false );
-            is.close();
-        }
-        catch ( IOException e )
-        {
-            e.printStackTrace();
-        }
-        return v;
-    }
-
 
     /**
      *  Description of the Method
