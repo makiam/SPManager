@@ -6,6 +6,7 @@ package artofillusion.spmanager.postinstall;
  * PostInstall: perform post-install cleanup
  *
  * Copyright (C) 2006 Nik Trevallyn-Jones, Sydney Australia
+ * Changes copyright (C) 2019 by Maksim Khramov
  *
  * Author: Nik Trevallyn-Jones, nik777@users.sourceforge.net
  * $Id: Exp $
@@ -42,6 +43,7 @@ public class PostInstall implements Plugin
     protected ArrayList ok, err;
     protected static File tempDir = null;
 
+    @Override
     public void processMessage(int msg, Object[] args)
     {
 	int i, k;

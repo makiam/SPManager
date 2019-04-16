@@ -1,5 +1,7 @@
 /*
  *  Copyright 2004 Francois Guillet
+ *  Changes copyright (C) 2019 by Maksim Khramov
+
  *  This program is free software; you can redistribute it and/or modify it under the
  *  terms of the GNU General Public License as published by the Free Software
  *  Foundation; either version 2 of the License, or (at your option) any later version.
@@ -98,6 +100,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
      *
      *@param  cb  Callback to call when done
      */
+    @Override
     public void getRemoteInfo( Runnable cb )
     {
         if ( !initialized )
@@ -113,6 +116,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
                 (
                     new Thread()
                     {
+                    @Override
                         public void run()
                         {
                             scanPlugins();
@@ -142,6 +146,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
     /**
      *  Init stuff
      */
+    @Override
     public void initialize()
     {
         super.initialize();
@@ -968,6 +973,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
          *@param  data  Description of the Parameter
          *@param  pos   Description of the Parameter
          */
+        @Override
         public void handleText( char[] data, int pos )
         {
             System.out.println( "handleText " + new String( data ) + " " + pos );
@@ -981,6 +987,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
          *@param  a    Description of the Parameter
          *@param  pos  Description of the Parameter
          */
+        @Override
         public void handleStartTag( HTML.Tag t, MutableAttributeSet a, int pos )
         {
             System.out.println( "StartTag :" + t + ":" + a + ":" + pos );
@@ -1039,6 +1046,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
          *@param  data  Description of the Parameter
          *@param  pos   Description of the Parameter
          */
+        @Override
         public void handleText( char[] data, int pos )
         {
             System.out.println( "handleText " + new String( data ) + " " + pos );
@@ -1104,6 +1112,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
          *@param  a    Description of the Parameter
          *@param  pos  Description of the Parameter
          */
+        @Override
         public void handleStartTag( HTML.Tag t, MutableAttributeSet a, int pos )
         {
             System.out.println( "StartTag :" + t + ":" + a + ":" + pos );

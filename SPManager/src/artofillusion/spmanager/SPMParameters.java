@@ -1,6 +1,8 @@
 
 /*
  *  Copyright 2004 Francois Guillet
+ *  Changes copyright (C) 2019 by Maksim Khramov
+
  *  This program is free software; you can redistribute it and/or modify it under the
  *  terms of the GNU General Public License as published by the Free Software
  *  Foundation; either version 2 of the License, or (at your option) any later version.
@@ -130,6 +132,7 @@ public class SPMParameters
             (
                 new Thread()
                 {
+                    @Override
                     public void run()
                     {
                         getThreadedRepositoriesList( true );
@@ -141,6 +144,7 @@ public class SPMParameters
             (
                 new Thread()
                 {
+                    @Override
                     public void run()
                     {
                         getThreadedRepositoriesList( false );
@@ -164,6 +168,7 @@ public class SPMParameters
 	dlg.setEnabled(true);
 
 	(new Thread() {
+                @Override
 		public void run()
 		{
 		    try {
@@ -274,6 +279,7 @@ public class SPMParameters
 					   //new Thread()
 					   new Runnable()
                     {
+                        @Override
                         public void run()
                         {
                             SPManagerFrame.getInstance().updatePanes();
@@ -312,6 +318,7 @@ public class SPMParameters
 					   //new Thread()
 					   new Runnable()
                     {
+                        @Override
                         public void run()
                         {
                             SPManagerFrame.getInstance().updatePanes();
@@ -786,6 +793,7 @@ public class SPMParameters
          *
          *@return    The passwordAuthentication value
          */
+        @Override
         protected PasswordAuthentication getPasswordAuthentication()
         {
             // if we have no stored credentials, prompt the user now

@@ -1,6 +1,8 @@
 
 /*
  *  Copyright 2004 Francois Guillet
+ *  Changes copyright (C) 2019 by Maksim Khramov
+
  *  This program is free software; you can redistribute it and/or modify it under the
  *  terms of the GNU General Public License as published by the Free Software
  *  Foundation; either version 2 of the License, or (at your option) any later version.
@@ -53,6 +55,7 @@ public class SPManagerPlugin implements Plugin
      *@param  message  Description of the Parameter
      *@param  args     Description of the Parameter
      */
+    @Override
     public void processMessage( int message, Object args[] )
     {
 	// NTJ: get the AOI run-time (*not* compile-time) version
@@ -530,6 +533,7 @@ public class SPManagerPlugin implements Plugin
 	    BTextField savePath;
 	    Thread worker;
 
+            @Override
 	    public void setVisible(boolean vis)
 	    {
 		if (!vis) {
@@ -591,6 +595,7 @@ public class SPManagerPlugin implements Plugin
 		    System.out.println("DOWNLOAD: creating ObjectInfo..."+
 			    url.toString());
 		    worker = new Thread() {
+                        @Override
 			public void run()
 			{
 			    info = new SPMObjectInfo(url);
@@ -703,6 +708,7 @@ public class SPManagerPlugin implements Plugin
 
 		    final ArrayList errs = new ArrayList();
 		    worker = new Thread() {
+                        @Override
 			public void run()
 			{
 			    long total = info.getTotalLength();
@@ -898,6 +904,7 @@ public class SPManagerPlugin implements Plugin
 
 	// create Frame with overridden 'close' method
 	spmFrame = new SPManagerFrame() {
+            @Override
 	    protected void hideSPManager()
 	    {
 		setVisible(false);

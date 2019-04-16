@@ -1,5 +1,7 @@
 /*
  *  Copyright 2004 Francois Guillet
+ *  Changes copyright (C) 2019 by Maksim Khramov
+
  *  This program is free software; you can redistribute it and/or modify it under the
  *  terms of the GNU General Public License as published by the Free Software
  *  Foundation; either version 2 of the License, or (at your option) any later version.
@@ -111,14 +113,15 @@ public class InstallSplitPane extends SPMSplitPane
     /**
      *  Description of the Method
      */
+    @Override
     protected void updateTree()
     {
 	if ( setup )
 	{
 	    //get the scripts
-	    fs.getRemoteInfo(
-		    new Runnable()
+	    fs.getRemoteInfo(new Runnable()
 		    {
+                @Override
 			public void run()
 			{
 			    doCallbackUpdate();
@@ -147,14 +150,15 @@ public class InstallSplitPane extends SPMSplitPane
     /**
      *  Pane setup
      */
+    @Override
     public void doSetup()
     {
 	if ( !setup )
 	{
 	    //get the scripts
-	    fs.getRemoteInfo(
-		    new Runnable()
+	    fs.getRemoteInfo(new Runnable()
 		    {
+                @Override
 			public void run()
 			{
 			    doCallbackUpdate();
@@ -309,6 +313,7 @@ public class InstallSplitPane extends SPMSplitPane
 		(
 			new Thread()
 			{
+                            @Override
 			    public void run()
 			    {
 				installAllSelected( pluginsPath );
@@ -318,6 +323,7 @@ public class InstallSplitPane extends SPMSplitPane
 
 				try {
 				    SwingUtilities.invokeAndWait(new Runnable() {
+                                        @Override
 					public void run()
 					{
 					    voidSelection();
@@ -498,6 +504,7 @@ public class InstallSplitPane extends SPMSplitPane
 		(
 			new Thread()
 			{
+                            @Override
 			    public void run()
 			    {
 				installFile( installNodeInfo );
@@ -508,6 +515,7 @@ public class InstallSplitPane extends SPMSplitPane
 				//SPManagerPlugin.restart();
 				try {
 				    SwingUtilities.invokeAndWait(new Runnable() {
+                                        @Override
 					public void run()
 					{
 					    /*  NTJ - replaced by restart()  */
@@ -826,6 +834,7 @@ public class InstallSplitPane extends SPMSplitPane
      *
      *@param  info  Description of the Parameter
      */
+    @Override
     protected void notifyObjectInfoSelection( SPMObjectInfo info )
     {
 	selectCB.removeEventLink( ValueChangedEvent.class, this );
@@ -841,6 +850,7 @@ public class InstallSplitPane extends SPMSplitPane
      *
      *@param  deletable  Description of the Parameter
      */
+    @Override
     public void scriptSelection( boolean deletable )
     {
 	//Button.setEnabled( true );
@@ -873,6 +883,7 @@ public class InstallSplitPane extends SPMSplitPane
      *
      *@param  deletable  Description of the Parameter
      */
+    @Override
     public void pluginSelection( boolean deletable )
     {
 	//installSingleButton.setEnabled( true );
@@ -908,6 +919,7 @@ public class InstallSplitPane extends SPMSplitPane
     /**
      *  Description of the Method
      */
+    @Override
     public void voidSelection()
     {
 	//installSingleButton.setEnabled( false );
