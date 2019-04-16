@@ -1,4 +1,3 @@
-
 /*
  *  Copyright 2004 Francois Guillet
  *  Changes copyright (C) 2019 by Maksim Khramov
@@ -138,28 +137,6 @@ public class SPManagerFrame extends BFrame
         updateSplitPane.setDividerLocation( updateSplitPane.getChild( 0 ).getPreferredSize().width );
         installSplitPane.setDividerLocation( installSplitPane.getChild( 0 ).getPreferredSize().width );
     }
-
-
-    /**
-     *  Dumps the sizes of a widget container children Used for debug purposes
-     *
-     *@param  wc  WidgetContainer
-     */
-    public void printBounds( WidgetContainer wc )
-    {
-        java.util.Iterator childEnum = wc.getChildren().iterator();
-        while ( childEnum.hasNext() )
-        {
-            Widget w = (Widget) childEnum.next();
-            System.out.println( "Widget: " + w );
-            System.out.println( "Bounds: " + w.getBounds() );
-            System.out.println( "Min size: " + w.getMinimumSize() );
-            System.out.println( "Pref size: " + w.getPreferredSize() );
-            if ( w instanceof WidgetContainer )
-                printBounds( (WidgetContainer) w );
-        }
-    }
-
 
     /**
      *  Hides the SPManager main window
