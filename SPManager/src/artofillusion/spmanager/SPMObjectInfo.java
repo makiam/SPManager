@@ -405,38 +405,6 @@ public class SPMObjectInfo
 	 */
 	private void loadXmlInfoFromJarFile()
 	{
-		/*
-		 * NTJ: AOI 2.5. Default XML file name changed to 'extensions.xml'
-		 * For compatibility we try the new name first, then the old...
-		 */
-		//String fn = getName() + ".xml";
-
-		/*
-		 *  byte[] xmlByteArray = SPManagerUtils.getJarFileContent( fileName, fn );
-		 *  if ( xmlByteArray != null )
-		 *  {
-		 *  try
-		 *  {
-		 *  ByteArrayInputStream xmlStream = new ByteArrayInputStream( xmlByteArray );
-		 *  BufferedReader xmlReader = new BufferedReader( new InputStreamReader( xmlStream ) );
-		 *  XmlParser parser = new XmlParser( xmlReader );
-		 *  try
-		 *  {
-		 *  traverse( parser, "" );
-		 *  }
-		 *  catch ( Exception exc )
-		 *  {
-		 *  System.out.println( "File " + fileName + " does not have a valid XML optional header." );
-		 *  }
-		 *  xmlReader.close();
-		 *  xmlStream.close();
-		 *  }
-		 *  catch ( Exception e )
-		 *  {
-		 *  e.printStackTrace();
-		 *  }
-		 *  }
-		 */
 
 		String fn = "extensions.xml";
 
@@ -451,9 +419,9 @@ public class SPMObjectInfo
 
 			// try new name first
 			try {
-				is = url.openStream();
+                            is = url.openStream();
 			} catch (Exception e) {
-				is = null;
+                            is = null;
 			}
 
 			// ok... try old name...
@@ -464,19 +432,19 @@ public class SPMObjectInfo
 			}
 
 			try {
-				//InputStreamReader r;
-				//BufferedReader xmlReader = new BufferedReader( new InputStreamReader( (InputStream) obj ) );
-				//BufferedInputStream xmlStream = new BufferedInputStream( (InputStream) obj );
-				BufferedInputStream xmlStream = new BufferedInputStream(is);
-				xmlDescription = SPManagerUtils.builder.parse( xmlStream );
-				readInfoFromXmlHeader( xmlDescription );
-				xmlStream.close();
-				//r.close();
-				//( (InputStream) obj ).close();
+                            //InputStreamReader r;
+                            //BufferedReader xmlReader = new BufferedReader( new InputStreamReader( (InputStream) obj ) );
+                            //BufferedInputStream xmlStream = new BufferedInputStream( (InputStream) obj );
+                            BufferedInputStream xmlStream = new BufferedInputStream(is);
+                            xmlDescription = SPManagerUtils.builder.parse( xmlStream );
+                            readInfoFromXmlHeader( xmlDescription );
+                            xmlStream.close();
+                            //r.close();
+                            //( (InputStream) obj ).close();
 			}
 			catch ( Throwable t ) {
-				System.out.println("Reading: " + url);
-				t.printStackTrace();
+                            System.out.println("Reading: " + url);
+                            t.printStackTrace();
 			}
 			//}
 		}
