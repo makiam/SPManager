@@ -37,14 +37,14 @@ public class SPMFileSystem
     
     public short getInfoType(SPMObjectInfo info)
     {
-        for (int i = 0; i < pluginsInfo.size(); ++i)
-            if (info == pluginsInfo.get(i)) return PLUGIN_TYPE;
-        for (int i = 0; i < toolInfo.size(); ++i)
-            if (info == toolInfo.get(i)) return TOOL_SCRIPT_TYPE;
-        for (int i = 0; i < objectInfo.size(); ++i)
-            if (info == objectInfo.get(i)) return OBJECT_SCRIPT_TYPE;
-        for (int i = 0; i < startupInfo.size(); ++i)
-            if (info == startupInfo.get(i)) return STARTUP_SCRIPT_TYPE;
+        for (SPMObjectInfo item: pluginsInfo)
+            if (info == item) return PLUGIN_TYPE;
+        for (SPMObjectInfo item: toolInfo)
+            if (info == item) return TOOL_SCRIPT_TYPE;
+        for (SPMObjectInfo item: objectInfo)
+            if (info == item) return OBJECT_SCRIPT_TYPE;
+        for (SPMObjectInfo item: startupInfo)
+            if (info == item) return STARTUP_SCRIPT_TYPE;
         return PLUGIN_TYPE;
     }
     
