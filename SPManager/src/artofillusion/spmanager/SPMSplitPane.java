@@ -18,6 +18,7 @@ import javax.swing.tree.*;
 import java.awt.event.*;
 import buoy.widget.*;
 import buoy.event.*;
+import java.util.List;
 
 /**
  *  Description of the Class
@@ -77,7 +78,7 @@ public class SPMSplitPane extends BSplitPane
 	/**
 	 *  Description of the Field
 	 */
-	protected static Vector splitPaneList;
+	protected static List<SPMSplitPane> splitPaneList;
 
 	/**
 	 *  Description of the Field
@@ -95,7 +96,7 @@ public class SPMSplitPane extends BSplitPane
 	private BScrollPane nameSP, descriptionSP;
 	private BComboBox descSelect;
 
-	private Vector descText;
+	private List<String> descText;
 
 	/**
 	 *  Description of the Field
@@ -126,9 +127,9 @@ public class SPMSplitPane extends BSplitPane
 	 */
 	public SPMSplitPane( String s )
 	{
-		super( BSplitPane.HORIZONTAL );
-		workMode = BROWSE;
-		initialize( s );
+            super( BSplitPane.HORIZONTAL );
+            workMode = BROWSE;
+            initialize( s );
 	}
 
 
@@ -173,7 +174,7 @@ public class SPMSplitPane extends BSplitPane
 
 		if ( splitPaneList == null )
 		{
-			splitPaneList = new Vector();
+                    splitPaneList = new ArrayList<>();
 		}
 		splitPaneList.add( this );
 
@@ -461,21 +462,21 @@ public class SPMSplitPane extends BSplitPane
 				objectDescription.setText( (String) descText.get(0) );
 			else objectDescription.setText("");
 
-			Vector changeLog = info.getChangeLog();
+			List<String> changeLog = info.getChangeLog();
 			if (changeLog != null) descSelect.setContents(changeLog);
 			else {
-				descSelect.removeAll();
-				descSelect.add(SPMTranslate.text("description"));
-				descSelect.add(SPMTranslate.text("history"));
+                            descSelect.removeAll();
+                            descSelect.add(SPMTranslate.text("description"));
+                            descSelect.add(SPMTranslate.text("history"));
 			}
 		}
 		else
 		{
-			objectName.setText( "" );
-			objectDescription.setText( "" );
+                    objectName.setText( "" );
+                    objectDescription.setText( "" );
 
-			descSelect.removeAll();
-			descSelect.add( SPMTranslate.text( "description" ));
+                    descSelect.removeAll();
+                    descSelect.add( SPMTranslate.text( "description" ));
 		}
 
 		//SPManagerFrame.getBFrame()
@@ -572,10 +573,10 @@ public class SPMSplitPane extends BSplitPane
 	 */
 	public void doUpdate()
 	{
-		clearTree();
-		updateTree();
-		layoutChildren();
-		voidSelection();
+            clearTree();
+            updateTree();
+            layoutChildren();
+            voidSelection();
 	}
 
 
@@ -586,14 +587,14 @@ public class SPMSplitPane extends BSplitPane
 	 */
 	public SPMSplitPane getManager()
 	{
-		for ( int i = 0; i < splitPaneList.size(); ++i )
-		{
-			if ( ( (SPMSplitPane) splitPaneList.elementAt( i ) ).workMode == BROWSE )
-			{
-				return (SPMSplitPane) splitPaneList.elementAt( i );
-			}
-		}
-		return null;
+            for ( int i = 0; i < splitPaneList.size(); ++i )
+            {
+                if ( ( splitPaneList.get( i ) ).workMode == BROWSE )
+                {
+                    return splitPaneList.get( i );
+                }
+            }
+            return null;
 	}
 
 
@@ -604,7 +605,7 @@ public class SPMSplitPane extends BSplitPane
 	 */
 	public SPMFileSystem getFileSystem()
 	{
-		return fs;
+            return fs;
 	}
 
 

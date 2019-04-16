@@ -18,8 +18,14 @@ import javax.swing.tree.*;
 import buoy.widget.*;
 import buoy.event.*;
 import java.io.*;
-import java.util.*;
+import java.util.List;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 /**
@@ -202,9 +208,9 @@ public class InstallSplitPane extends SPMSplitPane
      *
      *@param  addTo              Description of the Parameter
      *@param  infos              Description of the Parameter
-     *@param  managerInfoVector  Description of the Parameter
+     *@param  managerInfoList    Description of the Parameter
      */
-    private void getFiles( TreePath addTo, Vector infos, Vector managerInfoVector )
+    private void getFiles( TreePath addTo, List<SPMObjectInfo> infos, List<SPMObjectInfo> managerInfoList )
     {
 	DefaultMutableTreeNode tn;
 	SPMObjectInfo info;
@@ -214,7 +220,7 @@ public class InstallSplitPane extends SPMSplitPane
 
 	for ( int i = 0; i < infos.size(); i++ )
 	{
-	    info = (SPMObjectInfo) infos.elementAt( i );
+	    info = (SPMObjectInfo) infos.get( i );
 
 	    if (info.restriction >= SPMParameters.HIDE) continue;
 
@@ -223,16 +229,16 @@ public class InstallSplitPane extends SPMSplitPane
 		eligible = ( workMode == INSTALL );
 		managerInfo = null;
 		String name = info.getName();
-		for ( int j = 0; j < managerInfoVector.size(); ++j )
+		for ( int j = 0; j < managerInfoList.size(); ++j )
 		{
-		    if ( ( (SPMObjectInfo) managerInfoVector.elementAt( j ) ).getName().equals( name ) )
+		    if ( ( (SPMObjectInfo) managerInfoList.get( j ) ).getName().equals( name ) )
 		    {
 			eligible = ( workMode == UPDATE );
 			if ( eligible )
 			{
 			    //check if valid update
 
-			    managerInfo = (SPMObjectInfo) managerInfoVector.elementAt( j );
+			    managerInfo = (SPMObjectInfo) managerInfoList.get( j );
 			    System.out.println( info.getName() );
 			    System.out.println( "major distant local :" + info.getMajor() + " " + managerInfo.getMajor() );
 			    System.out.println( "minor distant local :" + info.getMinor() + " " + managerInfo.getMinor() );

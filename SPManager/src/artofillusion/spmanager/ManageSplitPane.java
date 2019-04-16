@@ -1,6 +1,7 @@
 /*
  *  Copyright 2004 Francois Guillet
  *  Changes copyright (C) 2019 by Maksim Khramov
+
  *  This program is free software; you can redistribute it and/or modify it under the
  *  terms of the GNU General Public License as published by the Free Software
  *  Foundation; either version 2 of the License, or (at your option) any later version.
@@ -16,7 +17,9 @@ import javax.swing.tree.*;
 import buoy.widget.*;
 
 import java.io.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *  Description of the Class
@@ -115,14 +118,14 @@ public class ManageSplitPane extends SPMSplitPane
      *@param  addTo  Description of the Parameter
      *@param  infos  Description of the Parameter
      */
-    private void getFiles( TreePath addTo, Vector infos )
+    private void getFiles( TreePath addTo, List<SPMObjectInfo> infos )
     {
         DefaultMutableTreeNode tn;
         SPMObjectInfo info;
 
         for ( int i = 0; i < infos.size(); i++ )
         {
-            info = (SPMObjectInfo) infos.elementAt( i );
+            info = infos.get( i );
             tn = new DefaultMutableTreeNode( info.getName() );
             tn.setAllowsChildren( false );
             tn.setUserObject( info );
@@ -132,7 +135,7 @@ public class ManageSplitPane extends SPMSplitPane
 
 	// NTJ: set reference counts
 	for (int i = 0; i < infos.size(); i++) {
-            info = (SPMObjectInfo) infos.elementAt( i );
+            info = (SPMObjectInfo) infos.get( i );
 	    //System.out.println("SPManager: file=" + info.getName());
 
 	    Collection externals = info.getExternals();
@@ -251,9 +254,9 @@ public class ManageSplitPane extends SPMSplitPane
         }
         for ( int i = 0; i < splitPaneList.size(); ++i )
         {
-            if ( splitPaneList.elementAt( i ) != this )
+            if ( splitPaneList.get( i ) != this )
             {
-                ( (SPMSplitPane) splitPaneList.elementAt( i ) ).doUpdate();
+                ( splitPaneList.get( i ) ).doUpdate();
             }
         }
 

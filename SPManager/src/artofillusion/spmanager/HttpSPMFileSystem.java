@@ -17,9 +17,11 @@ import javax.swing.*;
 import buoy.widget.*;
 import buoy.event.*;
 import java.io.*;
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.zip.*;
 import java.net.*;
+import java.util.Arrays;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
 import javax.swing.text.html.parser.*;
@@ -40,7 +42,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
     private URL repository;
     private HttpStatusDialog statusDialog;
     private boolean isDownloading;
-    private Vector callbacks;
+    private List<Runnable> callbacks;
 
     
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
@@ -66,10 +68,10 @@ public class HttpSPMFileSystem extends SPMFileSystem
      */
     public void setRepository( URL rep )
     {
-        pluginsInfo = new Vector();
-        toolInfo = new Vector();
-        objectInfo = new Vector();
-        startupInfo = new Vector();
+        pluginsInfo = new ArrayList<>();
+        toolInfo = new ArrayList<>();
+        objectInfo = new ArrayList<>();
+        startupInfo = new ArrayList<>();
         initialized = false;
         unknownHost = false;
         repository = rep;
@@ -90,7 +92,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
             unknownHost = false;
             if ( !isDownloading )
             {
-                callbacks = new Vector();
+                callbacks = new ArrayList<>();
                 callbacks.add( cb );
                 isDownloading = true;
                 statusDialog = new HttpStatusDialog();
@@ -110,7 +112,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
                             isDownloading = false;
                             initialized = true;
                             for ( int i = 0; i < callbacks.size(); ++i )
-                                ( (Runnable) callbacks.elementAt( i ) ).run();
+                                ( callbacks.get( i ) ).run();
                             statusDialog.dispose();
                             statusDialog = null;
                         }
@@ -160,10 +162,10 @@ public class HttpSPMFileSystem extends SPMFileSystem
         }
         if ( statusDialog != null )
             statusDialog.setText( SPMTranslate.text( "scanningPlugins" ) );
-        pluginsInfo = new Vector();
+        pluginsInfo = new ArrayList<>();
         if ( SPManagerFrame.getParameters().getUseCache() )
         {
-                scanFiles( "Plugins", pluginsInfo );
+            scanFiles( "Plugins", pluginsInfo );
         }
         else
         {
@@ -198,7 +200,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
         }
         if ( statusDialog != null )
             statusDialog.setText( SPMTranslate.text( "scanningToolScripts" ) );
-        toolInfo = new Vector();
+        toolInfo = new ArrayList<>();
         if ( SPManagerFrame.getParameters().getUseCache() )
         {
            scanFiles( "Scripts/Tools", toolInfo );
@@ -236,7 +238,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
         }
         if ( statusDialog != null )
             statusDialog.setText( SPMTranslate.text( "scanningObjectScripts" ) );
-        objectInfo = new Vector();
+        objectInfo = new ArrayList<>();
         if ( SPManagerFrame.getParameters().getUseCache() )
         {
            scanFiles( "Scripts/Objects", objectInfo );
@@ -274,7 +276,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
         }
         if ( statusDialog != null )
             statusDialog.setText( SPMTranslate.text( "scanningStartupScripts" ) );
-        startupInfo = new Vector();
+        startupInfo = new ArrayList<>();
         if ( SPManagerFrame.getParameters().getUseCache() )
         {
            scanFiles( "Scripts/Startup", startupInfo );
@@ -299,15 +301,15 @@ public class HttpSPMFileSystem extends SPMFileSystem
      *  Scans file on a general basis
      *
      *@param  from    URL to scan files from
-     *@param  addTo   Which vector to add info to
+     *@param  addTo   Which list to add info to
      *@param  suffix  Scanned files suffix
      */
-    private void scanFiles( URL from, Vector addTo, String suffix )
+    private void scanFiles( URL from, List<SPMObjectInfo> addTo, String suffix )
     {
         SPMObjectInfo info;
         boolean eligible;
 
-        Vector v = null;
+        List v = null;
 
         try
         {
@@ -434,9 +436,9 @@ public class HttpSPMFileSystem extends SPMFileSystem
      *  Scans file using server cgi
      *
      *@param  dir     directory to fetch scripts from
-     *@param  addTo   Which vector to add info to
+     *@param  addTo   Which list to add info to
      */
-    private void scanFiles( String dir, Vector addTo )
+    private void scanFiles( String dir, List<SPMObjectInfo> addTo )
     {
 
         URL cgiUrl = null;
@@ -451,8 +453,6 @@ public class HttpSPMFileSystem extends SPMFileSystem
             //cgiUrl = new URL( s + "/cgi-bin/RepoServer");
             //cgiUrl = new URL( s + "/cgi-bin/RepoServer?HTTP_X_AOI_Dir=" + dir + "&HTTP_X_AOI_Version="
     	    //	+ SPManagerPlugin.AOI_VERSION);
-            
-            String content = null;
             boolean received = false;
             int attempts = 0;
             System.out.println( cgiUrl );
@@ -877,15 +877,16 @@ public class HttpSPMFileSystem extends SPMFileSystem
      *@param  from  Description of the Parameter
      *@return       Description of the Return Value
      */
-    private Vector htmlFindFilesVersioning( InputStream is, URL from )
+    private List htmlFindFilesVersioning( InputStream is, URL from )
     {
-        Vector v = new Vector();
+        List v = new ArrayList();
 
         HtmlVersioningParserCallback callback = new HtmlVersioningParserCallback( v, from );
-        //BufferedReader bufferedReader = new BufferedReader( new InputStreamReader( is ) );
+        
         BufferedReader bufferedReader = null;
         try { bufferedReader = new BufferedReader( new InputStreamReader( is, "UTF-8" ) ); }
         catch (Exception e) { e.printStackTrace(); return v; }
+        
         try
         {
             new ParserDelegator().parse( bufferedReader, callback, false );
@@ -906,7 +907,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
      */
     private class HtmlParserCallback extends HTMLEditorKit.ParserCallback
     {
-        private Vector v;
+        private List v;
 
 
         /**
@@ -914,7 +915,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
          *
          *@param  v  Description of the Parameter
          */
-        public HtmlParserCallback( Vector v )
+        public HtmlParserCallback( List v )
         {
             this.v = v;
         }
@@ -976,7 +977,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
      */
     private class HtmlVersioningParserCallback extends HTMLEditorKit.ParserCallback
     {
-        private Vector v;
+        private List v;
         private URL from;
 
 
@@ -986,7 +987,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
          *@param  v     Description of the Parameter
          *@param  from  Description of the Parameter
          */
-        public HtmlVersioningParserCallback( Vector v, URL from )
+        public HtmlVersioningParserCallback( List v, URL from )
         {
             this.v = v;
             this.from = from;

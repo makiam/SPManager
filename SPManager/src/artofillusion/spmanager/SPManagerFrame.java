@@ -19,7 +19,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.event.ActionEvent;
-import java.util.Vector;
+import java.util.List;
 
 import buoy.widget.*;
 import buoy.event.*;
@@ -201,8 +201,8 @@ public class SPManagerFrame extends BFrame
      */
     protected void checkForUpdatedMe()
     {
-	Vector localList = manageSplitPane.getFileSystem().getPlugins();
-	Vector remoteList = updateSplitPane.getFileSystem().getPlugins();
+	List<SPMObjectInfo> localList = manageSplitPane.getFileSystem().getPlugins();
+	List<SPMObjectInfo> remoteList = updateSplitPane.getFileSystem().getPlugins();
 	SPMObjectInfo localinfo=null, remoteinfo=null;
 
 	for (int i = 0; i < localList.size(); i++) {

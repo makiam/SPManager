@@ -66,8 +66,8 @@ public class SPMObjectInfo
 	private String comments = null;
 
 	private HashMap externals;
-	private Vector changeLog;
-	private Vector details;
+	private List<String> changeLog;
+	private List<String> details;
 
 	protected HashMap exports;
 	public HashMap actions;
@@ -110,7 +110,6 @@ public class SPMObjectInfo
 	boolean selected = false;
 	boolean deletable = true;
 	private boolean remote;
-	private boolean filesetRecord;
 
 	/**
 	 *  Constructor for the SPMObjectInfo object
@@ -126,20 +125,20 @@ public class SPMObjectInfo
 	 */
 	public SPMObjectInfo( String fn )
 	{
-		fileName = fn;
-		separatorChar = File.separatorChar;
-		getName();
-		remote = false;
-		if ( fn.endsWith( ".bsh" ) )
-		{
-			loadXmlInfoFromScript();
-		}
-		else if ( fn.endsWith( ".jar" ) )
-		{
-			loadXmlInfoFromJarFile();
-		}
-		File f = new File( fn );
-		length = f.length();
+            fileName = fn;
+            separatorChar = File.separatorChar;
+            getName();
+            remote = false;
+            if ( fn.endsWith( ".bsh" ) )
+            {
+                    loadXmlInfoFromScript();
+            }
+            else if ( fn.endsWith( ".jar" ) )
+            {
+                    loadXmlInfoFromJarFile();
+            }
+            File f = new File( fn );
+            length = f.length();
 		//length = 0;
 
 	}
@@ -196,19 +195,19 @@ public class SPMObjectInfo
 	 */
 	public String getName()
 	{
-		if ( name.equals( "" ) )
-		{
-			int cut = fileName.lastIndexOf( separatorChar );
-			if (cut >= 0 && cut < fileName.length()-1)
-				name = fileName.substring(cut+1);
-			else
-				name = fileName;
+            if ( name.equals( "" ) )
+            {
+                    int cut = fileName.lastIndexOf( separatorChar );
+                    if (cut >= 0 && cut < fileName.length()-1)
+                            name = fileName.substring(cut+1);
+                    else
+                            name = fileName;
 
-			cut = name.lastIndexOf('.');
-			if (cut >= 0) name = name.substring(0, cut);
-		}
+                    cut = name.lastIndexOf('.');
+                    if (cut >= 0) name = name.substring(0, cut);
+            }
 
-		return name;
+            return name;
 	}
 
 
@@ -267,7 +266,7 @@ public class SPMObjectInfo
         @Override
 	public String toString()
 	{
-		return getName();
+            return getName();
 	}
 
 
@@ -279,7 +278,7 @@ public class SPMObjectInfo
 	 */
 	private String getXmlHeaderAsString( BufferedReader reader )
 	{
-		//Vector c = new Vector();
+
 		char c1 = ' ';
 		char c2 = ' ';
 		//String s = "";
@@ -292,7 +291,7 @@ public class SPMObjectInfo
 		}
 		catch ( IOException e )
 		{
-			e.printStackTrace();
+                    e.printStackTrace();
 		}
 		while ( ( ( c1 != '/' ) || ( c2 != '*' ) ) && ( status != -1 ) )
 		{
@@ -304,23 +303,23 @@ public class SPMObjectInfo
 			}
 			catch ( IOException e )
 			{
-				e.printStackTrace();
+                            e.printStackTrace();
 			}
 		}
 		while ( c1 != '<'  )
 		{
 			try
 			{
-				status = reader.read();
-				if ( status == -1 )
-				{
-					return null;
-				}
-				c1 = (char) status;
+                            status = reader.read();
+                            if ( status == -1 )
+                            {
+                                    return null;
+                            }
+                            c1 = (char) status;
 			}
 			catch ( IOException e )
 			{
-				e.printStackTrace();
+                            e.printStackTrace();
 			}
 		}
 		//s = s + c1;
@@ -364,35 +363,35 @@ public class SPMObjectInfo
 		String s = null;
 		try
 		{
-			fileReader = new BufferedReader( new FileReader( fileName ) );
-			s = getXmlHeaderAsString( fileReader );
+                    fileReader = new BufferedReader( new FileReader( fileName ) );
+                    s = getXmlHeaderAsString( fileReader );
 		}
 		catch ( FileNotFoundException e )
 		{
-			e.printStackTrace();
-			return;
+                    e.printStackTrace();
+                    return;
 		}
 		try
 		{
-			fileReader.close();
+                    fileReader.close();
 		}
 		catch ( IOException e )
 		{
-			e.printStackTrace();
-			return;
+                    e.printStackTrace();
+                    return;
 		}
 
 		if ( s == null )
 		{
-			return;
+                    return;
 		}
 		try
 		{
-			byte[] xmlByteArray = s.getBytes();
-			BufferedInputStream xmlStream = new BufferedInputStream( new ByteArrayInputStream( xmlByteArray ) );
-			xmlDescription = SPManagerUtils.builder.parse( xmlStream );
-			readInfoFromXmlHeader( xmlDescription );
-			xmlStream.close();
+                    byte[] xmlByteArray = s.getBytes();
+                    BufferedInputStream xmlStream = new BufferedInputStream( new ByteArrayInputStream( xmlByteArray ) );
+                    xmlDescription = SPManagerUtils.builder.parse( xmlStream );
+                    readInfoFromXmlHeader( xmlDescription );
+                    xmlStream.close();
 		}
 		catch ( Exception e )
 		{
@@ -743,7 +742,6 @@ public class SPMObjectInfo
 	private long getRemoteAddFileSize( String addFileName )
 	{
 		int i = fileName.lastIndexOf( separatorChar );
-		long fileSize = 0;
 		String name = fileName.substring( 0, i + 1 );
 
 		return getRemoteFileSize( name + addFileName );
@@ -782,24 +780,23 @@ public class SPMObjectInfo
 		int i, j, filtType;
 		String val, filtName, filtVal;
 		Iterator iter;
-		Map.Entry entry;
 		SPMParameters params = SPManagerFrame.getParameters();
 
 		if (changeLog == null) {
-			changeLog = new Vector(16);
-			details = new Vector(16);
-			externals = new HashMap(16);
-			destination = new ArrayList(16);
-			actions = new HashMap(16);
-			exports = new HashMap(32);
+                    changeLog = new ArrayList<>(16);
+                    details = new ArrayList<>(16);
+                    externals = new HashMap(16);
+                    destination = new ArrayList(16);
+                    actions = new HashMap(16);
+                    exports = new HashMap(32);
 		}
 		else {
-			changeLog.clear();
-			details.clear();
-			externals.clear();
-			destination.clear();
-			actions.clear();
-			exports.clear();
+                    changeLog.clear();
+                    details.clear();
+                    externals.clear();
+                    destination.clear();
+                    actions.clear();
+                    exports.clear();
 		}
 
 		flags = "";
@@ -1049,44 +1046,44 @@ public class SPMObjectInfo
 		if (fileSet != null)
 		{
 			NodeList filesList = fileSet.getChildNodes();
-			Vector fileNames = new Vector();
+			List<String> fileNames = new ArrayList<>();
 			for (i = 0; i < filesList.getLength(); ++i )
 			{
-				if( ! "file".equals( filesList.item(i).getNodeName() ) )
-					continue;
+                            if( ! "file".equals( filesList.item(i).getNodeName() ) )
+                                    continue;
 
-				// NTJ: get attributes
-				todir = SPManagerUtils.getAttribute(filesList.item(i),"todir");
-				src = SPManagerUtils.getAttribute(filesList.item(i),"src");
-				NodeList tmp = filesList.item(i).getChildNodes();
-				if (tmp.getLength() > 0) {
-					fileNames.add( (src != null && src.length() > 0 ? src : tmp.item(0).getNodeValue()) );
+                            // NTJ: get attributes
+                            todir = SPManagerUtils.getAttribute(filesList.item(i),"todir");
+                            src = SPManagerUtils.getAttribute(filesList.item(i),"src");
+                            NodeList tmp = filesList.item(i).getChildNodes();
+                            if (tmp.getLength() > 0) {
+                                    fileNames.add( (src != null && src.length() > 0 ? src : tmp.item(0).getNodeValue()) );
 
-					destination.add( (todir != null ? todir+separatorChar : "") + tmp.item(0).getNodeValue());
+                                    destination.add( (todir != null ? todir+separatorChar : "") + tmp.item(0).getNodeValue());
 
-					System.out.println("file: " + tmp.item(0).getNodeValue());
-				}
+                                    System.out.println("file: " + tmp.item(0).getNodeValue());
+                            }
 			}
 			if (fileNames.size() > 0)
 			{
-				files = new String[ fileNames.size() ];
-				for (i = 0; i < files.length; ++i )
-					files[i] = (String) fileNames.elementAt(i);
-				httpFiles = new String[files.length];
-				fileSizes = new long[files.length];
-				for (i = 0; i < files.length; ++i )
-				{
-					files[i] = files[i].trim();
-					httpFiles[i] = files[i].replaceAll( " ", "%20" );
-					if ( remote )
-					{
-						fileSizes[i] = getRemoteAddFileSize( httpFiles[i] );
-					}
-					else
-					{
-						fileSizes[i] = getAddFileSize( files[i] );
-					}
-				}
+                            files = new String[ fileNames.size() ];
+                            for (i = 0; i < files.length; ++i )
+                                    files[i] = fileNames.get(i);
+                            httpFiles = new String[files.length];
+                            fileSizes = new long[files.length];
+                            for (i = 0; i < files.length; ++i )
+                            {
+                                    files[i] = files[i].trim();
+                                    httpFiles[i] = files[i].replaceAll( " ", "%20" );
+                                    if ( remote )
+                                    {
+                                            fileSizes[i] = getRemoteAddFileSize( httpFiles[i] );
+                                    }
+                                    else
+                                    {
+                                            fileSizes[i] = getAddFileSize( files[i] );
+                                    }
+                            }
 			}
 		}
 	}
@@ -1231,9 +1228,9 @@ public class SPMObjectInfo
 	/**
 	 *  get the change log
 	 */
-	public Vector getChangeLog()
+	public List<String> getChangeLog()
 	{
-		return changeLog;
+            return changeLog;
 	}
 
 	/**
@@ -1241,9 +1238,9 @@ public class SPMObjectInfo
 	 *
 	 *@return    The details vector
 	 */
-	public Vector getDetails()
+	public List<String> getDetails()
 	{
-		return details;
+            return details;
 	}
 
 	/**
@@ -1294,14 +1291,14 @@ public class SPMObjectInfo
 	 */
 	public void setLog( String name, String text, int index )
 	{
-		if (index >= changeLog.size())
-			changeLog.add(name);
-		else changeLog.set(index, name);
+            if (index >= changeLog.size())
+                changeLog.add(name);
+            else changeLog.set(index, name);
 
-		if (text.startsWith("\n")) text = text.substring(1);
-		if (index >= details.size())
-			details.add(text);
-		else details.set(index, text);
+            if (text.startsWith("\n")) text = text.substring(1);
+            if (index >= details.size())
+                details.add(text);
+            else details.set(index, text);
 	}
 
 	/**

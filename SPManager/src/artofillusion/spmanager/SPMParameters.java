@@ -28,9 +28,8 @@ import artofillusion.ui.*;
  */
 public class SPMParameters
 {
-    private static Vector repositories;
+    private static List<String> repositories;
     private static int current;
-    private static String repoList;
     private static HashMap filters;
     private static boolean useProxy;
     private static String proxyHost;
@@ -64,7 +63,7 @@ public class SPMParameters
      */
     public SPMParameters()
     {
-        repositories = new Vector();
+        repositories = new ArrayList<>();
 
         repositories.add( "http://aoisp.sourceforge.net/AoIRepository/" );
         //hack
@@ -230,14 +229,14 @@ public class SPMParameters
 
             String repoName;
 	    boolean modified = true;
-	    String currentString = (String) repositories.elementAt( current );
+	    String currentString = repositories.get( current );
 
 	    System.out.println("current repo (" + current + "): " +
 			       currentString);
 
 	    int previous = current;
 	    current = 0;
-	    Vector newRepositories = new Vector();
+	    List<String> newRepositories = new ArrayList<>();
 	    while (true) {
 		repoName = rd.readLine();
 		if (repoName == null || repoName.length() == 0) break;
@@ -257,7 +256,7 @@ public class SPMParameters
 
 		System.out.println("repoName: " + repoName + "<<");
 
-		newRepositories.addElement( repoName );
+		newRepositories.add( repoName );
 		if ( repoName.equals( currentString ) ) {
 		    current = rd.getLineNumber() - 1;
 
@@ -453,7 +452,7 @@ public class SPMParameters
 
         for ( int i = 0; i < repositories.size(); ++i )
         {
-            p.setProperty( "URL_" + i, (String) repositories.elementAt( i ) );
+            p.setProperty( "URL_" + i, repositories.get( i ) );
         }
         p.setProperty( "default", String.valueOf( current ) );
 
@@ -510,7 +509,7 @@ public class SPMParameters
         String[] s = new String[repositories.size()];
         for ( int i = 0; i < repositories.size(); ++i )
         {
-            s[i] = new String( (String) repositories.elementAt( i ) );
+            s[i] = new String(repositories.get( i ) );
         }
         return s;
     }
@@ -529,7 +528,7 @@ public class SPMParameters
 	    // NTJ: DEBUG!!
 	    //if (true) return new URL("http://localhost/AoIRepository/");
 
-            url = new URL( (String) repositories.elementAt( current ) );
+            url = new URL(repositories.get( current ) );
         }
         catch ( MalformedURLException e )
         {
