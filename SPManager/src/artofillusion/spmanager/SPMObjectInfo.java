@@ -76,8 +76,8 @@ public class SPMObjectInfo
 	 *  Script file name
 	 */
 	public String fileName = "**Uninitialised**";
-	static String textBoxString = "";
-	/**
+
+        /**
 	 *  URL of the script
 	 */
 	public URL httpFile;
