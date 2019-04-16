@@ -56,25 +56,6 @@ public class SPMTranslate
         return locale;
     }
 
-
-
-
-
-
-    /**
-     *  Description of the Method
-     *
-     *@param  name    Description of the Parameter
-     *@param  target  Description of the Parameter
-     *@param  method  Description of the Parameter
-     *@return         Description of the Return Value
-     */
-    public static BMenuItem bMenuItem( String name, java.lang.Object target, String method )
-    {
-        return bMenuItem( name, CommandEvent.class, target, method );
-    }
-
-
     /**
      *  Description of the Method
      *

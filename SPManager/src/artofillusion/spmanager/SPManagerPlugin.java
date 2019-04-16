@@ -295,8 +295,7 @@ public class SPManagerPlugin implements Plugin
 		    .showMessageDialog(null);
 		}
 	    }
-	    else System.out.println("SPManager: could not find plugin dir: " +
-		    PLUGIN_DIRECTORY);
+	    else System.out.println("SPManager: could not find plugin dir: " + PLUGIN_DIRECTORY);
 
 
 	    init();
@@ -309,8 +308,7 @@ public class SPManagerPlugin implements Plugin
 	    //BMenu toolsMenu = menuBar.getChild( 3 );
 	    BMenu toolsMenu = layout.getToolsMenu();
 	    toolsMenu.addSeparator();
-	    BMenuItem menuItem =
-		SPMTranslate.bMenuItem( "SPManager", this, "doMenu" );
+	    BMenuItem menuItem = SPMTranslate.bMenuItem("SPManager", CommandEvent.class, this, "doMenu" );
 
 	    toolsMenu.add( menuItem );
 	}
