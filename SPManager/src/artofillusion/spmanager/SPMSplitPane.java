@@ -180,8 +180,8 @@ public class SPMSplitPane extends BSplitPane
 
 		ColumnContainer cc = new ColumnContainer();
 
-		BScrollPane sc;
-		add( sc = new BScrollPane( tree = new BTree( new DefaultMutableTreeNode( SPMTranslate.text( s ) ) ) ), 0 );
+		
+		add(new BScrollPane( tree = new BTree( new DefaultMutableTreeNode( SPMTranslate.text( s ) ) ) ), 0 );
 
 		add( cc, 1 );
 

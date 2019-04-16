@@ -36,12 +36,10 @@ import java.util.TreeMap;
  */
 public class InstallSplitPane extends SPMSplitPane
 {
-    private URL repository;
 
-    private BButton installAllButton, installSingleButton, selectAllButton;
+    private BButton installAllButton;
     private BCheckBox selectCB;
     private boolean setup = false;
-    private boolean unknownHost = false;
     private StatusDialog status;
     private long downloadedLength = 0;
     private long lengthToDownload;
@@ -58,9 +56,7 @@ public class InstallSplitPane extends SPMSplitPane
      */
     public InstallSplitPane( short workMode, URL repository )
     {
-	super( ( workMode == INSTALL ? "installScriptsPlugins" : "updateScriptsPlugins" ), workMode );
-	fs = new HttpSPMFileSystem( repository );
-	initialize();
+        this(workMode, new HttpSPMFileSystem(repository));
     }
 
 
@@ -120,7 +116,7 @@ public class InstallSplitPane extends SPMSplitPane
 	    //get the scripts
 	    fs.getRemoteInfo(new Runnable()
 		    {
-                @Override
+                        @Override
 			public void run()
 			{
 			    doCallbackUpdate();
@@ -157,7 +153,7 @@ public class InstallSplitPane extends SPMSplitPane
 	    //get the scripts
 	    fs.getRemoteInfo(new Runnable()
 		    {
-                @Override
+                        @Override
 			public void run()
 			{
 			    doCallbackUpdate();
@@ -934,7 +930,6 @@ public class InstallSplitPane extends SPMSplitPane
      */
     public void setRepository( URL newRep )
     {
-	repository = newRep;
 	fs = new HttpSPMFileSystem( newRep );
 	doSetup();
     }

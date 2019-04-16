@@ -410,7 +410,7 @@ public class SPMParameters
 	}
 
 	// initialise an empty filter set
-	if (filters.size() == 0) {
+	if (filters.isEmpty()) {
 	    filters.put("beta", "mark");
 	    filters.put("earlyAccess", "confirm");
 	    filters.put("experimental", "hide");
@@ -429,14 +429,14 @@ public class SPMParameters
         s = p.getProperty( "useProxy", "false" );
         try
         {
-            useProxy = Boolean.valueOf( s ).booleanValue();
+            useProxy = Boolean.valueOf( s );
         }
         catch ( Exception e )
         {
             useProxy = false;
             System.out.println( "SPManager : Invalid use of proxy setting in properties file: useProxy=" + s);
         }
-        useCache = Boolean.valueOf( p.getProperty( "usecache", "true" )).booleanValue();
+        useCache = Boolean.valueOf( p.getProperty( "usecache", "true" ));
 
     }
 
