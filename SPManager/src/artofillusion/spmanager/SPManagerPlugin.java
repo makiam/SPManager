@@ -20,10 +20,13 @@ import java.awt.*;
 import buoy.event.*;
 import buoy.widget.*;
 
-import java.util.*;
 import java.io.*;
 import java.net.*;
 import java.lang.reflect.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  *  The Plugin corresponding to the SPManager
@@ -77,7 +80,7 @@ public class SPManagerPlugin implements Plugin
 	    System.out.println("SPManager starting...");
 
 	    // get details of plugin classloaders
-	    int i, j;
+	    int i;
 	    URL urlList[];
 
 	    ClassLoader ldr = null;
@@ -85,17 +88,15 @@ public class SPManagerPlugin implements Plugin
 	    SearchlistClassLoader searchldr = null;
 	    Object obj;
 
-	    java.util.List list = PluginRegistry.getPluginClassLoaders();
-	    HashMap loaders = new HashMap(list.size());
-	    for (i = 0; i < list.size(); i++) {
-		obj = list.get(i);
-		if (obj instanceof URLClassLoader)
-		    urlList = ((URLClassLoader) obj).getURLs();
+	    HashMap<URL, ClassLoader> loaders = new HashMap<>();
+	    for (ClassLoader loader: PluginRegistry.getPluginClassLoaders()) {
+		if (loader instanceof URLClassLoader)
+		    urlList = ((URLClassLoader) loader).getURLs();
 		else
-		    urlList = ((SearchlistClassLoader) obj).getURLs();
+		    urlList = ((SearchlistClassLoader) loader).getURLs();
 
 		if (urlList.length > 0)
-		    loaders.put(urlList[0], obj);
+		    loaders.put(urlList[0], loader);
 	    }
 
 
