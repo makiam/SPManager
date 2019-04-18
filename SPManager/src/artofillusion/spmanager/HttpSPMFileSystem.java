@@ -101,7 +101,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
                 (
                     new Thread()
                     {
-                    @Override
+                        @Override
                         public void run()
                         {
                             scanPlugins();
@@ -113,8 +113,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
                                 scanStartupScripts();
                             isDownloading = false;
                             initialized = true;
-                            for ( int i = 0; i < callbacks.size(); ++i )
-                                ( callbacks.get( i ) ).run();
+                            for (Runnable cb: callbacks) cb.run();
                             statusDialog.dispose();
                             statusDialog = null;
                         }
@@ -452,8 +451,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
             System.out.println( cgiUrl );
             while (!received && attempts++ < 5 )
             {
-		HttpURLConnection conn =
-		    (HttpURLConnection) cgiUrl.openConnection();
+		HttpURLConnection conn = (HttpURLConnection) cgiUrl.openConnection();
 
 		conn.setRequestProperty("Accept-Encoding", "deflate, gzip");
 		conn.setRequestProperty("X-AOI-Version", HttpSPMFileSystem.AOI_VERSION);
@@ -580,133 +578,6 @@ public class HttpSPMFileSystem extends SPMFileSystem
             }
         }
     }
-
-    /**
-     *  Description of the Method
-     *
-     *@param  fileName          Description of the Parameter
-     *@param  from              Description of the Parameter
-     *@param  status            Description of the Parameter
-     *@param  downloadedLength  Description of the Parameter
-     *@param  lengthToDownload  Description of the Parameter
-     *@return                   Description of the Return Value
-     */
-    public static long downloadRemoteTextFile( URL from, String fileName, long size, StatusDialog status, long totalDownload, long downloadedLength, ArrayList errors )
-    {
-	//if (fileName.endsWith(".upd")) return 0;
-
-        BufferedReader in = null;
-        BufferedWriter file = null;
-        long initialValue = downloadedLength;
-        //System.out.println( from + ": downloadedLength :" + downloadedLength + " " + lengthToDownload );
-        try
-        {
-	    HttpURLConnection conn = (HttpURLConnection) from.openConnection();
-	    
-	    conn.setRequestProperty("Cache-Control", "no-cache");
-	    conn.setRequestProperty("Accept-Encoding", "deflate, gzip");
-
-	    if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-		new BStandardDialog("SPManager", new String[] {
-					SPMTranslate.text("httpError"),
-					conn.getResponseMessage() +
-					" (" + conn.getResponseCode() + ")",
-				    }, BStandardDialog.ERROR)
-		    .showMessageDialog(SPManagerFrame.getInstance());
-
-		return 0;
-	    }
-
-	    InputStream is = conn.getInputStream();
-	    
-	    System.out.println("Content-Encoding: " + conn.getHeaderField("Content-Encoding"));
-	    
-	    if (conn.getHeaderField("Content-Encoding").equalsIgnoreCase("deflate"))
-	    	is = new InflaterInputStream(is, new Inflater(true));
-
-	    if (conn.getHeaderField("Content-Encoding").equalsIgnoreCase("gzip"))
-	    	is = new GZIPInputStream(is);
-
-            //in = new BufferedReader( new InputStreamReader( from.openStream() ) );
-	    in = new BufferedReader( new InputStreamReader( is ) );
-                
-	    file = new BufferedWriter( new FileWriter(fileName) );
-
-            double a;
-            double b = totalDownload;
-            int value;
-            int newValue;
-            value = status.getBarValue();
-
-            int i = in.read();
-            while ( i != -1 )
-            {
-                file.write( i );
-                i = in.read();
-                if ( status != null )
-                {
-                    ++downloadedLength;
-                    a = downloadedLength;
-                    newValue = (int) Math.round( ( a * 100.0 ) / b );
-                    if ( newValue > value )
-                    {
-                        status.setBarValue( newValue );
-                        status.setProgressText( newValue + "%" );
-                        value = newValue;
-                    }
-                }
-            }
-
-	    file.flush();
-	    file.close();
-
-            //System.out.println( "downloadedLength :" + downloadedLength + " " + ( downloadedLength - initialValue ) );
-
-	    // check we got the expected data
-	    long received = downloadedLength - initialValue;
-	    if (received != size)
-		throw new IOException("SPManager: file incomplete." +
-				      " Only received " + received +
-				      " bytes of " + size);
-
-        }
-        catch ( Exception e)
-        {
-	    /*
-            e.printStackTrace();
-            JOptionPane.showMessageDialog( null, from.toString() + ": " + SPMTranslate.text( "fileNotFound" ), SPMTranslate.text( "error" ), JOptionPane.ERROR_MESSAGE );
-	    */
-	    errors.add(SPMTranslate.text("error") + "(" + fileName + ")" + e);
-        }
-	/*
-        catch ( IOException e )
-        {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog( null, from.toString() + ": " + SPMTranslate.text( "ioError" ), SPMTranslate.text( "error" ), JOptionPane.ERROR_MESSAGE );
-        }
-	*/
-        finally
-        {
-            try
-            {
-                if ( in != null )
-                    in.close();
-                if ( file != null )
-                    file.close();
-            }
-            catch ( IOException e )
-            {
-                //e.printStackTrace();
-		System.out.println("SPManager: error closing " + fileName +
-				   ": " + e);
-		//errors.add("error closing " + fileName);
-            }
-
-	    //if (update.exists()) update.delete();
-        }
-        return downloadedLength - initialValue;
-    }
-
 
     /**
      *  Description of the Method
@@ -892,77 +763,6 @@ public class HttpSPMFileSystem extends SPMFileSystem
         return v;
     }
 
-
-    /**
-     *  Description of the Class
-     *
-     *@author     pims
-     *@created    1 juillet 2004
-     */
-    private class HtmlParserCallback extends HTMLEditorKit.ParserCallback
-    {
-        private List v;
-
-
-        /**
-         *  Constructor for the HtmlParserCallback object
-         *
-         *@param  v  Description of the Parameter
-         */
-        public HtmlParserCallback( List v )
-        {
-            this.v = v;
-        }
-
-
-        /**
-         *  Description of the Method
-         *
-         *@param  data  Description of the Parameter
-         *@param  pos   Description of the Parameter
-         */
-        @Override
-        public void handleText( char[] data, int pos )
-        {
-            System.out.println( "handleText " + new String( data ) + " " + pos );
-        }
-
-
-        /**
-         *  Description of the Method
-         *
-         *@param  t    Description of the Parameter
-         *@param  a    Description of the Parameter
-         *@param  pos  Description of the Parameter
-         */
-        @Override
-        public void handleStartTag( HTML.Tag t, MutableAttributeSet a, int pos )
-        {
-            System.out.println( "StartTag :" + t + ":" + a + ":" + pos );
-            if ( t == HTML.Tag.A )
-            {
-                String s = (String) a.getAttribute( HTML.Attribute.HREF );
-                v.add( s );
-            }
-
-        }
-
-
-        /**
-         *  Description of the Method
-         *
-         *@param  t    Description of the Parameter
-         *@param  a    Description of the Parameter
-         *@param  pos  Description of the Parameter
-         */
-        public void handleEndTag( HTML.Tag t, MutableAttributeSet a, int pos )
-        {
-            System.out.println( "EndTag :" + t + ":" + a + ":" + pos );
-        }
-    }
-
-
-
     /**
      *  Description of the Class
      *
@@ -1079,7 +879,6 @@ public class HttpSPMFileSystem extends SPMFileSystem
                         System.out.println( "fileURL " + fileURL );
                         HttpURLConnection.setFollowRedirects( false );
                         HttpURLConnection connection = (HttpURLConnection) fileURL.openConnection();
-                        String header = connection.getHeaderField( 0 );
                         InputStreamReader in = new InputStreamReader( connection.getInputStream() );
                         //read the contents of the contents file
                         int status = 0;
@@ -1158,7 +957,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
             progressBar.setIndeterminate( true );
             setContent( cc );
             pack();
-            centerAndSizeWindow();
+            UIUtilities.centerDialog(this, (WindowWidget) getParent());
             setVisible( true );
             layoutChildren();
             addEventLink( WindowClosingEvent.class, this, "doClose" );
@@ -1176,33 +975,6 @@ public class HttpSPMFileSystem extends SPMFileSystem
             label.setText( text );
             layoutChildren();
         }
-
-
-        /**
-         *  Description of the Method
-         */
-        private void centerAndSizeWindow()
-        {
-	    UIUtilities.centerDialog(this, (WindowWidget) getParent());
-
-	    /*
-            Dimension d1 = Toolkit.getDefaultToolkit().getScreenSize();
-            Dimension d2 = getComponent().getSize();
-            int x;
-            int y;
-
-            d2.width = new Long( Math.round( d2.width * 1.3 ) ).intValue();
-            //System.out.println( d1 );
-            x = ( d1.width - d2.width ) / 2;
-            y = ( d1.height - d2.height ) / 2;
-            if ( x < 0 )
-                x = 0;
-            if ( y < 0 )
-                y = 0;
-            setBounds( new Rectangle( x, y, d2.width, d2.height + 2 ) );
-	    */
-        }
-
 
         /**
          *  Description of the Method
