@@ -11,6 +11,7 @@
  */
 package artofillusion.spmanager;
 
+import artofillusion.ArtOfIllusion;
 import artofillusion.ui.*;
 import java.awt.*;
 import javax.swing.*;
@@ -38,6 +39,7 @@ import org.w3c.dom.Document;
  */
 public class HttpSPMFileSystem extends SPMFileSystem
 {
+    private static final String AOI_VERSION = ArtOfIllusion.getMajorVersion();
     boolean unknownHost;
     private URL repository;
     private HttpStatusDialog statusDialog;
@@ -153,7 +155,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
         if (SPManagerFrame.getParameters().getUseCache() ) {
             String s = repository.toString();
             s = s.substring(0, s.lastIndexOf('/'));
-            s = s + "/cgi-bin/scripts.cgi?Plugins%20" + SPManagerPlugin.AOI_VERSION;
+            s = s + "/cgi-bin/scripts.cgi?Plugins%20" + HttpSPMFileSystem.AOI_VERSION;
             SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningPluginsFrom", s ), 5000 );
         } else
             SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningPluginsFrom", repository.toString()), 5000 );
@@ -190,7 +192,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
 
             String s = repository.toString();
             s = s.substring(0, s.lastIndexOf('/'));
-            s = s + "/cgi-bin/scripts.cgi?Scripts/Tools%20" + SPManagerPlugin.AOI_VERSION;
+            s = s + "/cgi-bin/scripts.cgi?Scripts/Tools%20" + HttpSPMFileSystem.AOI_VERSION;
             SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningToolScriptsFrom", s ), 5000 );
         } else
             SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningToolScriptsFrom", repository.toString() ), 5000 );
@@ -227,7 +229,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
 
             String s = repository.toString();
             s = s.substring(0, s.lastIndexOf('/'));
-            s = s + "/cgi-bin/scripts.cgi?Scripts/Objects%20" + SPManagerPlugin.AOI_VERSION;
+            s = s + "/cgi-bin/scripts.cgi?Scripts/Objects%20" + HttpSPMFileSystem.AOI_VERSION;
             SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningObjectScriptsFrom", s), 5000 );
         } else
             SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningObjectScriptsFrom", repository.toString()), 5000 );
@@ -264,7 +266,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
             
             String s = repository.toString();
             s = s.substring(0, s.lastIndexOf('/'));
-            s = s + "/cgi-bin/scripts.cgi?Scripts/Startup%20" + SPManagerPlugin.AOI_VERSION;
+            s = s + "/cgi-bin/scripts.cgi?Scripts/Startup%20" + HttpSPMFileSystem.AOI_VERSION;
             SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningStartupScriptsFrom", s), 5000 );
         } else
             SPManagerFrame.getInstance().setRemoteStatusText( SPMTranslate.text( "scanningStartupScriptsFrom", repository.toString()), 5000 );
@@ -443,11 +445,8 @@ public class HttpSPMFileSystem extends SPMFileSystem
             String s = repository.toString();
 	    String err = "";
 	    s = s.substring(0, s.lastIndexOf('/'));
-            cgiUrl = new URL( s + "/cgi-bin/scripts.cgi?" + dir + "%20" + SPManagerPlugin.AOI_VERSION );
-            //cgiUrl = new URL( s + "/cgi-bin/scripts.cgi?-z%20" + dir + "%20" + SPManagerPlugin.AOI_VERSION );
-            //cgiUrl = new URL( s + "/cgi-bin/RepoServer");
-            //cgiUrl = new URL( s + "/cgi-bin/RepoServer?HTTP_X_AOI_Dir=" + dir + "&HTTP_X_AOI_Version="
-    	    //	+ SPManagerPlugin.AOI_VERSION);
+            cgiUrl = new URL( s + "/cgi-bin/scripts.cgi?" + dir + "%20" + HttpSPMFileSystem.AOI_VERSION );
+
             boolean received = false;
             int attempts = 0;
             System.out.println( cgiUrl );
@@ -457,7 +456,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
 		    (HttpURLConnection) cgiUrl.openConnection();
 
 		conn.setRequestProperty("Accept-Encoding", "deflate, gzip");
-		conn.setRequestProperty("X-AOI-Version", SPManagerPlugin.AOI_VERSION);
+		conn.setRequestProperty("X-AOI-Version", HttpSPMFileSystem.AOI_VERSION);
 		conn.setRequestProperty("X-AOI-Dir", dir);
 		
 		if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -1102,7 +1101,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
                         //Get the file names
                         String[] versions = content.split( "\n" );
                         //send to findCorrectVersion
-                        String name = findCorrectVersion( SPManagerPlugin.AOI_VERSION, versions );
+                        String name = findCorrectVersion( HttpSPMFileSystem.AOI_VERSION, versions );
                         if ( !name.equals( "" ) )
                             v.add( s + "/" + name );
 

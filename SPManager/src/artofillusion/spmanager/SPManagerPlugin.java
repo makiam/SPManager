@@ -36,7 +36,7 @@ import java.util.Map;
  */
 public class SPManagerPlugin implements Plugin
 {
-    public static String AOI_VERSION;
+
     public static String UNIQUE_PATH;
     public static String TEMP_DIR;
     public static String APP_DIRECTORY;
@@ -60,12 +60,6 @@ public class SPManagerPlugin implements Plugin
     @Override
     public void processMessage( int message, Object args[] )
     {
-	// NTJ: get the AOI run-time (*not* compile-time) version
-	if (AOI_VERSION == null) {
-	    AOI_VERSION = ArtOfIllusion.getMajorVersion();
-	    System.setProperty("artofillusion.version", ArtOfIllusion.getVersion());
-	    System.setProperty("artofillusion.version.major", ArtOfIllusion.getMajorVersion());
-	}
 
 	switch (message) {
 	case Plugin.APPLICATION_STARTING:
