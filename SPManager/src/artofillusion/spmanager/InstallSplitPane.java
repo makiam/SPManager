@@ -209,7 +209,6 @@ public class InstallSplitPane extends SPMSplitPane
     private void getFiles( TreePath addTo, List<SPMObjectInfo> infos, List<SPMObjectInfo> managerInfoList )
     {
 
-	SPMObjectInfo managerInfo;
 	boolean eligible;
 	TreeMap<String, SPMObjectInfo> map = new TreeMap<>();
 
@@ -219,18 +218,18 @@ public class InstallSplitPane extends SPMSplitPane
 	    {
 		//check if file candidate for update or install
 		eligible = ( workMode == INSTALL );
-		managerInfo = null;
-		String name = info.getName();
+		
 		for ( int j = 0; j < managerInfoList.size(); ++j )
 		{
-		    if ( ( (SPMObjectInfo) managerInfoList.get( j ) ).getName().equals( name ) )
+                    SPMObjectInfo managerInfo = managerInfoList.get( j );
+		    if ( managerInfo.getName().equals( info.getName() ) )
 		    {
 			eligible = ( workMode == UPDATE );
 			if ( eligible )
 			{
 			    //check if valid update
 
-			    managerInfo = (SPMObjectInfo) managerInfoList.get( j );
+			    
 			    System.out.println( info.getName() );
 			    System.out.println( "major distant local :" + info.getMajor() + " " + managerInfo.getMajor() );
 			    System.out.println( "minor distant local :" + info.getMinor() + " " + managerInfo.getMinor() );
@@ -269,7 +268,7 @@ public class InstallSplitPane extends SPMSplitPane
 	    }
 	}
 
-        for (Map.Entry<String, SPMObjectInfo> entry: map.entrySet())
+        for(SPMObjectInfo entry: map.values())
         {
             tree.addNode(addTo, new DefaultMutableTreeNode(entry, false));
         }
