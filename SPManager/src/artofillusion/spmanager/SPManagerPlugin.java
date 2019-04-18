@@ -37,7 +37,6 @@ import java.util.Map;
 public class SPManagerPlugin implements Plugin
 {
 
-    public static String UNIQUE_PATH;
     public static String TEMP_DIR;
     public static String APP_DIRECTORY;
     public static String PLUGIN_DIRECTORY;
