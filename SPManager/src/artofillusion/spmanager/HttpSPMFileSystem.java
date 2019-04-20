@@ -591,9 +591,7 @@ public class HttpSPMFileSystem extends SPMFileSystem
      */
     public static long downloadRemoteBinaryFile( URL from, String fileName, long size, StatusDialog status, long totalDownload, long downloadedLength, ArrayList errors )
     {
-	System.out.println("download: size=" + size +
-			   "; total=" + totalDownload +
-			   "; downloaded=" + downloadedLength);
+	System.out.println("download: size=" + size + "; total=" + totalDownload + "; downloaded=" + downloadedLength);
 
 	//if (fileName.endsWith(".upd")) return 0;
 
