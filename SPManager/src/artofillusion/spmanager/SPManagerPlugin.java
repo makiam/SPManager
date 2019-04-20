@@ -427,8 +427,7 @@ public class SPManagerPlugin implements Plugin
 	}
     }
 
-    public void registerResource(String type, String id, ClassLoader loader,
-	    String baseName, Locale locale)
+    public void registerResource(String type, String id, ClassLoader loader, String baseName, Locale locale)
     {
 	String suffix = "";
 
@@ -447,8 +446,7 @@ public class SPManagerPlugin implements Plugin
 		url = loader.getResource(baseName + suffix + ".properties");
 
 		if (url != null) {
-		    PluginRegistry.registerResource(type, id, loader,
-			    url.getPath(), locale);
+		    PluginRegistry.registerResource(type, id, loader, url.getPath(), locale);
 		    break;
 		}
 	    } catch (Exception e) {}
@@ -470,7 +468,6 @@ public class SPManagerPlugin implements Plugin
     {
 	final BFrame context = frame;
 	final URL url = from;
-	final URL toUrl = to;
 
 	final StatusDialog status = new StatusDialog(context) {
 	    SPMObjectInfo info;
@@ -649,8 +646,7 @@ public class SPManagerPlugin implements Plugin
 
 		}
 		else if (cmd.equals("install")) {
-		    System.out.println("DOWNLOAD: downloading " +
-			    url.toString());
+		    System.out.println("DOWNLOAD: downloading " + url.toString());
 
 		    setText(SPMTranslate.text("downloading", info.getName()));
 		    pack();
