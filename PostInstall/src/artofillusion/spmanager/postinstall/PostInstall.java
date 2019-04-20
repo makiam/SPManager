@@ -74,14 +74,15 @@ public class PostInstall implements Plugin
 		// get the correct sub-tree
 		String prefix = "spmanager-temp-" + System.getProperty("user.name") + "-";
 		File lockfile;
-		String[] sub = tempDir.list();
-		for (i = 0; i < sub.length; i++) {
-		    if (sub[i].startsWith(prefix) && (!sub[i].endsWith(".lck"))) {
-			lockfile = new File(tempDir, sub[i] + ".lck");
+
+		
+		for (String sub: tempDir.list()) {
+		    if (sub.startsWith(prefix) && (!sub.endsWith(".lck"))) {
+			lockfile = new File(tempDir, sub + ".lck");
 			
 			// no lock-file means not active
 			if (!lockfile.exists()) {
-			    tempDir = new File(tempDir, sub[i]);
+			    tempDir = new File(tempDir, sub);
 			    break;
 			}
 		    }
